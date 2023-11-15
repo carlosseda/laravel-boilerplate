@@ -13,19 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome', ['name' => 'Amigo']);
-});
+Route::group(['prefix' => 'admin'], function () {
 
-Route::get('/tienda/{producto}', function (string $producto) {
-  return view('shop', ['name' => $producto]);
+    Route::resource('usuarios', 'App\Http\Controllers\Admin\UserController', [
+        'parameters' => [
+            'usuarios' => 'user', 
+        ],
+        'names' => [
+            'index' => 'users',
+            'create' => 'users_create',
+            'edit' => 'users_edit',
+            'store' => 'users_store',
+            'destroy' => 'users_destroy',
+            'show' => 'users_show',
+        ]
+    ]);
 });
-
-Route::get('/quienes-somos', function () {
-  return view('welcome', ['name' => 'Carlos']);
-});
-
-Route::get('/contacto', function () {
-  return view('welcome', ['name' => 'Carlos']);
-});
-
