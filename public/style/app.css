@@ -1,0 +1,193 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: hsl(0, 0%, 100%);
+    font-family: 'Roboto', sans-serif;
+}
+
+input,
+label,
+select,
+textarea,
+li,
+span,
+p {
+    color: hsl(0, 0%, 100%);
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: hsl(226, 63%, 45%);
+    margin: 0 auto;
+    width: 90%;
+}
+
+header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem 0;
+}
+
+.top-bar-hamburguer button svg {
+    width: 3rem;
+}
+
+.top-bar-hamburguer button svg path {
+    fill: hsl(0, 0%, 100%);
+}
+
+.filter {
+    align-items: center;
+    background-color: hsl(0, 0%, 100%);
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    padding: 0.2rem 0;
+}
+
+.filter-button button svg {
+    width: 2rem;
+}
+
+.filter-button button svg path {
+    fill: hsl(207, 85%, 69%);
+}
+
+.filter-button button:hover svg path {
+    fill: hsl(34, 79%, 53%);
+}
+
+
+.crud {
+    display: flex;
+    gap: 5%;
+    justify-content: space-between;
+}
+
+.table {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.table-buttons {
+    background-color: hsl(207, 85%, 69%);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.edit-button button svg,
+.delete-button button svg {
+    width: 2rem;
+}
+
+.edit-button button svg path,
+.delete-button button svg path {
+    fill: hsl(0, 0%, 100%);
+}
+
+.edit-button button:hover svg path,
+.delete-button button:hover svg path {
+    fill: hsl(34, 79%, 53%);
+}
+
+.table-data {
+    background-color: hsl(226, 64%, 66%);
+    padding: 0.5rem;
+}
+
+.table-data ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.table-data ul li span {
+    font-weight: 700;
+}
+
+.table-data ul li span::after {
+    content: ":";
+    margin-right: 0.5rem;
+}
+
+.form {
+    flex: 2;
+}
+
+.form-buttons {
+    background-color: hsl(0, 0%, 100%);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-right: 0.5rem;
+}
+
+.form-clean-button button svg,
+.form-save-button button svg {
+    width: 2rem;
+}
+
+.form-clean-button button svg path,
+.form-save-button button svg path {
+    fill: hsl(207, 85%, 69%);
+}
+
+.form-clean-button button:hover svg path,
+.form-save-button button:hover svg path {
+    fill: hsl(34, 79%, 53%);
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2%;
+}
+
+.form-element {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    width: 49%;
+}
+
+.form-element-label label {
+    font-weight: 700;
+}
+
+.form-element-input * {
+    background-color: hsl(226, 64%, 66%);
+    border: none;
+    box-sizing: border-box;
+    font-size: 1rem;
+    outline: transparent;
+    padding: 0.5rem;
+    width: 100%;
+}

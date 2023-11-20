@@ -13,19 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome', ['name' => 'Amigo']);
-});
-
-Route::get('/tienda/{producto}', function (string $producto) {
-  return view('shop', ['name' => $producto]);
-});
-
-Route::get('/quienes-somos', function () {
-  return view('welcome', ['name' => 'Carlos']);
-});
-
-Route::get('/contacto', function () {
-  return view('welcome', ['name' => 'Carlos']);
+Route::get('/admin', function () {
+    return view('admin.users.index');
 });
 
