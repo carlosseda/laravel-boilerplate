@@ -2,12 +2,12 @@
 
 @section('content')
 
-    <section class="table">
-        @yield('table')
-    </section>
+  <section class="table">
+    @yield('table')
+  </section>
 
-    <section class="form">
-        @yield('form')
-    </section>
+  <section class="form">
+    @yield('form')
+  </section>
 
 @endsection

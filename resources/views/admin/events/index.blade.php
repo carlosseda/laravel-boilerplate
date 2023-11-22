@@ -22,7 +22,7 @@
         </div>
         <div class="table-data">
             <ul>
-                <li><span>Email</span>bolitakinki69@hotmail.com</li>
+                <li><span>Título</span>Fiesta de nochevieja</li>
                 <li><span>Nombre</span>Carlos</li>
             </ul>
         </div>
@@ -48,45 +48,68 @@
     <div class="form-row">
       <div class="form-element">
         <div class="form-element-label">
-          <label for="name">
-            Nombre
-          </label>
+            <label for="title">
+              Título
+            </label>
+        </div>
+        <div class="form-element-input">
+            <input type="text">
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-element">
+        <div class="form-element-label">
+            <label for="address">
+              Dirección
+            </label>
         </div>
         <div class="form-element-input">
           <input type="text">
         </div>
       </div>
       <div class="form-element">
-        <div class="form-element-label">
-          <label for="email">
-            Email
-          </label>
-        </div>
-        <div class="form-element-input">
-          <input type="email">
-        </div>
+          <div class="form-element-label">
+            <label for="price">
+              Precio
+            </label>
+          </div>
+          <div class="form-element-input">
+            <input type="number">
+          </div>
       </div>
     </div>
-
     <div class="form-row">
       <div class="form-element">
         <div class="form-element-label">
-          <label for="password">
-            Contraseña
+          <label for="date">
+            Fecha
           </label>
         </div>
         <div class="form-element-input">
-          <input type="password">
+          <input type="date">
         </div>
       </div>
       <div class="form-element">
+          <div class="form-element-label">
+            <label for="time">
+              Hora
+            </label>
+          </div>
+          <div class="form-element-input">
+            <input type="time">
+          </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-element">
         <div class="form-element-label">
-          <label for="confirmar-password">
-            Repetir contraseña
-          </label>
+            <label for="confirmar-password">
+              Descrición
+            </label>
         </div>
         <div class="form-element-input">
-          <input type="password">
+          <textarea></textarea>
         </div>
       </div>
     </div>

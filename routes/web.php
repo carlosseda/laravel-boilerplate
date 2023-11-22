@@ -13,7 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/admin', function () {
-    return view('admin.users.index');
+Route::get('/admin/usuarios', function () {
+  return view('admin.users.index');
+});
+
+Route::get('/admin/eventos', function () {
+  return view('admin.events.index');
 });
 
