@@ -1,0 +1,10 @@
+body {
+  background-color: $primary-color;
+  margin: 0 auto;
+  width: 90%;
+}
+
+.row {
+  display: flex;
+  gap: 5%;
+}

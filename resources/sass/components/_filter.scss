@@ -1,0 +1,43 @@
+.filter {
+  background-color: hsl(0, 0%, 100%);
+  margin-bottom: 2rem;
+  padding: 0.5rem 20%;
+}
+
+.filter-button{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.filter-button button svg {
+  width: 2rem;
+}
+
+.filter-button button svg path {
+  fill: hsl(207, 85%, 69%);
+}
+
+.filter-button button:hover svg path {
+  fill: hsl(34, 79%, 53%);
+}
+
+.table-filter.active .table-filter-container{
+  max-height: 70vh;
+}
+
+.filter-form{
+  max-height: 0;
+  margin: 0 auto;
+  overflow: hidden;
+  transition: max-height 0.6s ease-in-out;
+  width: 100%;
+}
+
+.filter.active .filter-form{
+  max-height: 70vh;
+}
+
+.filter-form label{
+  color: hsl(207, 85%, 69%);
+}

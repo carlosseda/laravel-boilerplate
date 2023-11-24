@@ -1,0 +1,49 @@
+
+.table {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.table-buttons {
+  background-color: hsl(207, 85%, 69%);
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.edit-button button svg,
+.delete-button button svg {
+  width: 2rem;
+}
+
+.edit-button button svg path,
+.delete-button button svg path {
+  fill: hsl(0, 0%, 100%);
+}
+
+.edit-button button:hover svg path,
+.delete-button button:hover svg path {
+  fill: hsl(34, 79%, 53%);
+}
+
+.table-data {
+  background-color: hsl(226, 64%, 66%);
+  padding: 0.5rem;
+}
+
+.table-data ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.table-data ul li span {
+  font-weight: 700;
+}
+
+.table-data ul li span::after {
+  content: ":";
+  margin-right: 0.5rem;
+}

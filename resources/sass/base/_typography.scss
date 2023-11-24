@@ -1,0 +1,34 @@
+h1, h2, h3, h4, h5, h6{
+  color: hsl(0, 0%, 100%);
+}
+
+input, label, select, textarea, li, span, p  {
+  color: hsl(0, 0%, 100%); 
+}
+
+h1, h2, h3, h4 {
+    font-family: $font-stack;
+}
+
+h5, h6 {
+    font-family: $font-stack-condensed;
+}
+
+a, td, th, p, button, span, label, select, input, textarea, li{
+    font-family: $font-stack;
+}
+
+a {
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -o-transition: 300ms;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 300ms;
+}
+
+a:hover, a:focus {
+  outline: none;
+  text-decoration: none;
+  outline-offset: 0;
+}
