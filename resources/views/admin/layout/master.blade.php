@@ -8,18 +8,14 @@
 
         <title>Maquetación</title>
 
-        <link rel="stylesheet" href="/style/app.css">
+        @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     </head>
 
     <body>
         @include('admin.layout.partials.header')
 
         <main>
-            @include('admin.components.filter')
-
-            <div class="crud">
-                @yield('content')
-            </div>
+          @yield('content')
         </main>
     </body>
 </html>
