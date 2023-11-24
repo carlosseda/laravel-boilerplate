@@ -6,102 +6,76 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Http\Requests\Admin\UserRequest;
+use App\Http\Request\Admin\UserRequest;
 
 class UserController extends Controller
 {
     public function __construct(private User $user)
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
     
     public function index()
     {
+      $view = View::make('admin.users.index')->with('users', $this->user->get());
 
-        $view = View::make('admin.users.index')
-                ->with('user', $this->user)
-                ->with('users', $this->user->where('active', 1)->get());
-
-        if(request()->ajax()) {
-            
-            $sections = $view->renderSections(); 
-    
-            return response()->json([
-                'table' => $sections['table'],
-                'form' => $sections['form'],
-            ]); 
-        }
-
-        return $view;
-    }
-
-    public function create()
-    {
-
-        $view = View::make('admin.users.index')
-        ->with('user', $this->user)
-        ->renderSections();
+      if(request()->ajax()) {
+          
+        $sections = $view->renderSections(); 
 
         return response()->json([
-            'form' => $view['form']
-        ]);
+            'table' => $sections['table'],
+            'form' => $sections['form'],
+        ]); 
+      }
+
+      return $view;
     }
 
     public function store(UserRequest $request)
     {            
         
-        if (request('password') !== null) {
+      $userData = [
+        'name' => $request->input('name'),
+        'email' => $request->input('email'),
+      ];
 
-            $user = User::updateOrCreate([
-                'id' => request('id')],[
-                'name' => request('name'),
-                'email' => request('email'),
-                'password' => bcrypt(request('password')),
-                'active' => 1,
-            ]);
-            
-        }else{
+      if ($request->filled('password')) {
+        $userData['password'] = bcrypt($request->input('password'));
+      }
 
-            $user = User::updateOrCreate([
-                'id' => request('id')],[
-                'name' => request('name'),
-                'email' => request('email'),
-                'active' => 1,
-            ]);
-        }
+      $user = User::updateOrCreate([
+        'id' => $request->input('id')
+      ], $userData);
 
-        $view = View::make('admin.users.index')
-        ->with('users', $this->user->where('active', 1)->get())
-        ->with('user', $user)
-        ->renderSections();        
+      $view = View::make('admin.users.index')
+      ->with('users', $this->user->get())
+      ->with('user', $user)
+      ->renderSections();        
 
-        return response()->json([
-            'table' => $view['table'],
-            'form' => $view['form'],
-            'id' => $user->id,
-        ]);
+      return response()->json([
+        'table' => $view['table'],
+        'form' => $view['form'],
+        'id' => $user->id,
+      ]);
     }
 
     public function edit(User $user)
     {
-        $view = View::make('admin.users.index')
-        ->with('user', $user)
-        ->with('users', $this->user->where('active', 1)->get());   
-        
-        if(request()->ajax()) {
+      $view = View::make('admin.users.index')
+      ->with('user', $user)
+      ->with('users', $this->user->where('active', 1)->get());   
+      
+      if(request()->ajax()) {
 
-            $sections = $view->renderSections(); 
-    
-            return response()->json([
-                'form' => $sections['form'],
-            ]); 
-        }
-                
-        return $view;
-    }
-
-    public function show(User $user){
-
+          $sections = $view->renderSections(); 
+  
+          return response()->json([
+              'form' => $sections['form'],
+          ]); 
+      }
+              
+      return $view;
     }
 
     public function destroy(User $user)
