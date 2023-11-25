@@ -1,0 +1,33 @@
+.tabs {
+  align-items: stretch; 
+  display: flex;
+}
+
+.tab {
+  display: flex;
+}
+
+.tab button {
+  background-color: hsl(0, 0%, 100%);
+  color: $secondary-color;
+  cursor: pointer;
+  padding: 0 1rem;
+}
+
+.tab button:hover {
+  color: $secondary-color
+}
+
+.tab.active button{
+  background-color: $secondary-color;
+  color: hsl(0, 0%, 100%);
+}
+
+.tab-content {
+  display: none;
+  padding: 1rem 2%;
+} 
+
+.tab-content.active {
+  display: block;
+}

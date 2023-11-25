@@ -1,8 +1,9 @@
 //z-index
-$z-index-checkout: 999;
-$z-index-product: 1000;
-$z-index-slider: 1001;
-$z-index-modal: 2000;
+$z-index-modal-filter: 3000;
+$z-index-modal-destroy: 3000;
+$z-index-tooltip: 2000;
+$z-index-menu-button: 1001;
+$z-index-menu: 1000;
 
 //typography
 $font-stack: 'Roboto', sans-serif;
@@ -10,8 +11,11 @@ $font-stack-condensed: 'Roboto Condensed', sans-serif;
 
 //colors
 $primary-color: hsl(226, 63%, 45%);
-$hover-color: hsl(18, 100%, 57%);
 $secondary-color: hsl(207, 85%, 69%);
+$tertiary-color: hsl(226, 64%, 66%);
+$hover-color: hsl(34, 94%, 51%);
+$red-color: hsl(0, 65%, 55%);
+$green-color: hsl(183, 98%, 35%);
 
 //style
 $text-border: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;

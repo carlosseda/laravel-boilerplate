@@ -1,12 +1,12 @@
 .menu {
-  background-color: hsl(207, 85%, 69%);
+  background-color: $secondary-color;
   height: 100vh;
   position: fixed;
   left: 0;
   top: -100vh;
   transition: top 0.5s ease-in-out;
   width: 100%;
-  z-index: 1000;
+  z-index: $z-index-menu;
 }
 
 .menu.active {
@@ -15,7 +15,7 @@
 
 .menu-button {
 	position: relative;
-  z-index: 1001;
+  z-index: $z-index-menu-button;
 }
 
 .menu-button svg {

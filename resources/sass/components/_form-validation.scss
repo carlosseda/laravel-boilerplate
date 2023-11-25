@@ -1,0 +1,10 @@
+.validation-error{
+  background-color: $red-color;
+}
+
+.validation-error ul{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}

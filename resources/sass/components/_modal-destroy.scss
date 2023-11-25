@@ -1,4 +1,4 @@
-.filter {
+.modal-destroy {
   align-items: center;
   background-color: hsla(0, 0%, 0%, 0.75);
   display: flex;
@@ -11,52 +11,42 @@
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
   visibility: hidden;
   width: 100%;
-  z-index: $z-index-modal-filter;
+  z-index: $z-index-modal-destroy;
 }
 
-.filter.active {
+.modal-destroy.active {
   opacity: 1;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
   visibility: visible;
 }
 
-.filter-content {
+.modal-destroy-content {
   background-color: $primary-color;
   border: 0.2rem solid hsl(0, 0%, 100%);
   box-shadow: 5px 10px 19px 2px rgba(175, 162, 162);
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 2rem;
+  padding: 3rem;
   width: 500px;
 }
 
-.filter-header {
+.modal-destroy-header {
   padding: 0.5em 1em;
   text-align: center;
 }
 
-.filter-header h4{
+.modal-destroy-header h4 {
   color: hsl(0, 0%, 100%);
   font-size: 1.2rem;
 }
 
-.filter-form form{
-  display: flex;
-  flex-direction: column;
-}
-
-.filter-form form label{
-  color: hsl(0, 0%, 100%);
-  font-weight: 400;
-}
-
-.filter-footer {
+.modal-destroy-footer {
   display: flex;
   gap: 2rem;
 }
 
-.filter-option {
+.modal-destroy-option {
   color: hsl(0, 0%, 100%);
   cursor: pointer;
   flex: 1;
@@ -65,10 +55,10 @@
   text-align: center;
 }
 
-.filter-confirm {
-  background-color: $green-color;
+.destroy-cancel {
+  background-color: $red-color;
 }
 
-.filter-cancel {
-  background-color: $red-color;
+.destroy-confirm {
+  background-color: $green-color;
 }

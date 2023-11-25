@@ -1,0 +1,58 @@
+.table-pagination{
+  background-color: hsl(0, 0%, 100%);
+  box-shadow: 5px 10px 19px -7px rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem;;
+}
+
+.table-pagination-info{
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-pagination-info span{
+  color: hsl(0, 0%, 0%);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.table-pagination-pages{
+  position: relative;
+}
+
+.table-current-page{
+  cursor: pointer;
+}
+
+.table-current-page span{
+  color: hsl(0, 0%, 0%);
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0 0.5rem;
+}
+
+.table-pagination-buttons{
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+
+.table-pagination-button button{
+  color: $secondary-color;
+  font-weight: 700;
+  padding: 0;
+}
+
+.table-pagination-button:hover button{
+  color: $hover-color;
+}
+
+.table-pagination-button.inactive button{
+  color: hsl(0, 0%, 69%);
+  cursor: not-allowed;
+}
+

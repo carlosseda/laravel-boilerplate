@@ -1,35 +1,38 @@
-.form {
+.form{
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   flex: 2;
 }
 
-.form-buttons {
+.form-top-bar {
   background-color: hsl(0, 0%, 100%);
+  box-shadow: 5px 10px 19px -7px rgba(0,0,0,0.75);
   display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-  padding-right: 0.5rem;
+  justify-content: space-between;
 }
 
-.form-buttons svg,
+.form-buttons {
+  display: flex;
+  padding: 0 0.5rem;
+}
+
 .form-buttons svg {
-  width: 2rem;
+  width: 2.1rem;
 }
 
-.form-buttons svg path,
 .form-buttons svg path {
-  fill: hsl(207, 85%, 69%);
+  fill: $secondary-color;
 }
 
-.form-clean-button button:hover svg path,
-.form-save-button button:hover svg path {
-  fill: hsl(34, 79%, 53%);
+.form-buttons button:hover svg path {
+  fill: $hover-color;
 }
 
 .form-row {
   display: flex;
   gap: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .form-element {
@@ -40,18 +43,23 @@
 }
 
 .form-element-label label {
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .form-element-input * {
-  background-color: hsl(226, 64%, 66%);
+  background-color: $tertiary-color;
   border: none;
+  border-bottom: 0.2rem solid white;
   box-sizing: border-box;
   font-size: 1rem;
   height: 2rem;
   outline: transparent;
   padding: 0.5rem;
   width: 100%;
+}
+
+.form-element-input *.error {
+  border-bottom: 0.2rem solid $red-color;
 }
 
 .form-element-input input[type="number"]::-webkit-outer-spin-button,
@@ -63,6 +71,17 @@
 .form-element-input input[type="date"]::-webkit-calendar-picker-indicator,
 .form-element-input input[type="time"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px $tertiary-color inset !important;
+}
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: hsl(0, 0%, 100%) !important;
 }
 
 .form-element-input textarea{
