@@ -11,19 +11,19 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-    use SoftDeletes;
+  use HasApiTokens, HasFactory, Notifiable;
+  use SoftDeletes;
 
-    protected $guarded = [];
-    protected $dates = ['deleted_at'];
+  protected $guarded = [];
+  protected $dates = ['deleted_at'];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+  protected $hidden = [
+    'password',
+    'remember_token',
+  ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+  protected $casts = [
+    'email_verified_at' => 'datetime',
+    'password' => 'hashed',
+  ];
 }
