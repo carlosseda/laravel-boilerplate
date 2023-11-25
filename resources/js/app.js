@@ -1,4 +1,9 @@
 import './bootstrap';
-import './menu.js';
-import './filter.js';
-import './form.js';
+import './webfont';
+import './menu';
+import './table';
+import './form';
+import './form-validation';
+import './tabs';
+import './modal-destroy';
+import './notification';
