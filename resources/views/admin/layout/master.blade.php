@@ -12,6 +12,8 @@
     </head>
 
     <body>
+        @include('admin.components.modal-destroy')
+        @include('admin.components.notification')
         @include('admin.layout.partials.header')
 
         <main>
