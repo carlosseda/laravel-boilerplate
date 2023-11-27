@@ -4,3 +4,10 @@ header {
   justify-content: space-between;
   padding: 1rem 0;
 }
+
+.top-bar-interaction {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}

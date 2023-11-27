@@ -7,7 +7,7 @@
     </div>
   @endif
 
-  @component('admin.components.modal-filter')
+  @component('components.modal-filter')
     <form>
       <div class="form-row">
         <div class="form-element">
@@ -72,12 +72,12 @@
               <li><span>Nombre</span>{{$user_record->name}}</li>
               <li><span>Fecha de creación</span>{{$user_record->created_at}}</li>
             </ul>
-        </div>
+        </div> 
       </article>
     @endforeach
   </div>
 
-  @include('admin.components.table-pagination', ['items' => $users])
+  @include('components.table-pagination', ['items' => $users])
 
 @endsection
 
