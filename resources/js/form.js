@@ -7,7 +7,7 @@ export default (() => {
     formSection.innerHTML = event.detail.form;
   });
 
-  formSection.addEventListener('click', async (event) => {
+  formSection?.addEventListener('click', async (event) => {
 
     if (event.target.closest('.store-button')) {
 

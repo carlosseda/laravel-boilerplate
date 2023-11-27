@@ -6,7 +6,7 @@ export default (() => {
     tableSection.innerHTML = event.detail.table;
   });
 
-  tableSection.addEventListener('click', async (event) => {
+  tableSection?.addEventListener('click', async (event) => {
 
     if (event.target.closest('.edit-button')) {
 

@@ -2,7 +2,7 @@ export default (() => {
 
   const main = document.querySelector('main');
 
-  main.addEventListener('click', (event) => {
+  main?.addEventListener('click', (event) => {
 
     if (event.target.closest('.tab')) {
       

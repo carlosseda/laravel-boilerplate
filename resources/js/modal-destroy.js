@@ -8,7 +8,7 @@ export default (() => {
     destroyConfirm.dataset.endpoint = event.detail.endpoint;
   });
 
-  modalSection.addEventListener('click', async (event) => {
+  modalSection?.addEventListener('click', async (event) => {
 
     if (event.target.closest('.destroy-cancel')) {
       modalSection.classList.remove('active');
