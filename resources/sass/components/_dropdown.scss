@@ -1,3 +1,48 @@
+.dropdown{
+  position: relative;
+}
+
 .dropdown-trigger button{
+  align-items: center;
   display: flex;
+  gap: 0.5rem;
+}
+
+.dropdown-trigger button svg{
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.dropdown-trigger svg path{
+  fill: hsl(0, 0%, 100%);
+}
+
+.dropdown-content{
+  background-color: $secondary-color;
+  display: flex;
+  flex-direction: column;
+  max-height: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 2rem;
+  transition: max-height 0.3s ease-in-out;
+  z-index: 2000;
+} 
+
+.dropdown.active .dropdown-content{
+  max-height: max-content;
+}
+
+.dropdown-content a{
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: hsl(0, 0%, 100%);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0;
+  padding: 1rem;
+}
+
+.dropdown-content a:hover{
+  background-color: $hover-color;
 }

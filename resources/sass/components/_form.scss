@@ -29,17 +29,34 @@
   fill: $hover-color;
 }
 
-.form-row {
+.form-elements {
   display: flex;
-  gap: 2rem;
+  flex-wrap: wrap;
+  gap: 2%;
   margin-bottom: 2rem;
 }
 
 .form-element {
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.full-width {
+  flex: 0 0 100%;
+}
+
+.half-width {
+  flex: 0 0 49%;
+}
+
+.one-third-width {
+  flex: 0 0 32%;
+}
+
+.one-quarter-width {
+  flex: 0 0 23.5%;
 }
 
 .form-element-label label {
@@ -52,7 +69,6 @@
   border-bottom: 0.2rem solid white;
   box-sizing: border-box;
   font-size: 1rem;
-  height: 2rem;
   outline: transparent;
   padding: 0.5rem;
   width: 100%;

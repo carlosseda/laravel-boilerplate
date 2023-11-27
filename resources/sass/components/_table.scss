@@ -5,7 +5,7 @@
   gap: 1.5rem;
 }
 
-.table-top-bar {
+.table-buttons {
   background-color: hsl(0, 0%, 100%);
   box-shadow: 5px 10px 19px -7px rgba(0,0,0,0.75);
   display: flex;
@@ -54,30 +54,30 @@
   background-color: $hover-color;
 }
 
-.table-buttons {
+.table-record-buttons {
   background-color: hsl(0, 0%, 100%);
   display: flex;
   justify-content: flex-end;
 }
 
-.table-buttons button svg{
+.table-record-buttons button svg{
   width: 2rem;
 }
 
-.table-buttons svg path{
+.table-record-buttons svg path{
   fill: $secondary-color;
 }
 
-.table-buttons button:hover svg path{
+.table-record-buttons button:hover svg path{
   fill: $hover-color;
 }
 
-.no-records {
+.table-no-records {
   background-color: $secondary-color;
   padding: 0.5rem;
 }
 
-.no-records p {
+.table-no-records p {
   font-weight: 700;
   text-align: center;
 }
