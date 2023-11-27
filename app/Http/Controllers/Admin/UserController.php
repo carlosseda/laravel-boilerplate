@@ -10,10 +10,7 @@ use App\Http\Requests\Admin\UserRequest;
 
 class UserController extends Controller
 {
-  public function __construct(private User $user)
-  {
-    // $this->middleware('auth');
-  }
+  public function __construct(private User $user){}
   
   public function index()
   {
