@@ -70,9 +70,9 @@ export default (() => {
       filter.classList.remove('active');
     }
 
-    if (event.target.closest('.table-pagination-button')){
+    if (event.target.closest('.table-pagination-page')){
 
-      const paginationButton = event.target.closest('.table-pagination-button');
+      const paginationButton = event.target.closest('.table-pagination-page');
 
       if(paginationButton.classList.contains('inactive')){
         return;
