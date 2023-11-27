@@ -78,7 +78,7 @@ export default (() => {
       }
     }
 
-    if (event.target.closest('.clean-button')) {
+    if (event.target.closest('.cleate-button')) {
 
       const cleanButton = event.target.closest('.clean-button')
       const endpoint = cleanButton.dataset.endpoint;

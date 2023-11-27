@@ -60,16 +60,6 @@ export default (() => {
       }));
     }
 
-    if (event.target.closest('.table-filter-button')) {
-      const filter = document.querySelector(".filter");
-      filter.classList.toggle("active");
-    }
-
-    if (event.target.closest('.filter-cancel')) {
-      const filter = document.querySelector(".filter");
-      filter.classList.remove('active');
-    }
-
     if (event.target.closest('.table-pagination-page')){
 
       const paginationButton = event.target.closest('.table-pagination-page');
@@ -113,46 +103,5 @@ export default (() => {
         }))
       }
     }
-
-    tableSection.addEventListener('change', async (event) => {
-
-      if(event.target.closest('.table-pagination-select select')){
-
-        try{
-          const paginationSelect = event.target.closest('.table-pagination-select select');
-          const endpoint = paginationSelect.value;
-
-          const response = await fetch(endpoint, {
-            headers: {
-              'X-Requested-With': 'XMLHttpRequest',
-            },
-            method: 'GET',
-          })
-
-          if (response.status === 500) {
-            throw response
-          }
-
-          const json = await response.json();
-
-          document.dispatchEvent(new CustomEvent('refreshTable', {
-            detail: {
-              table: json.table,
-            }
-          }));
-        }catch(error){
-
-          const json = await error.json();
-
-          document.dispatchEvent(new CustomEvent('notification', {
-            detail: {
-              message: json.message,
-              type: 'error'
-            }
-          }))
-        } 
-      }
-    });
   });
-
 })();
