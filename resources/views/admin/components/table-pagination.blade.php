@@ -11,7 +11,7 @@
   </div>
   <div class="table-pagination-buttons">
     <div class="table-pagination-button {{$items->onFirstPage() ? 'inactive' : ''}}" data-pagination="{{$items->url(1)}}">
-      <button>Primera</button>
+      <button>{{__('admin/pagination.first_page')}}</button>
     </div>
     <div class="table-pagination-button {{$items->onFirstPage() ? 'inactive' : ''}}" data-pagination="{{$items->previousPageUrl()}}">
       <button>Anterior</button>
