@@ -1,15 +1,13 @@
-@extends('admin.layout.master')
-
-@section('content')
+<x-admin-layout :title="$title">
 
   <div class="crud">
     <section class="table">
-      @yield('table')
+      {{$table}}
     </section>
   
     <section class="form">
-      @yield('form')
+      {{$form}}
     </section>
   </div>
 
-@endsection
+</x-admin-layout>

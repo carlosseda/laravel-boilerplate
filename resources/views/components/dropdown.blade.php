@@ -1,6 +1,6 @@
 <div class="dropdown">
     <div class="dropdown-trigger">
-        {{ $trigger }}
+      {{ $trigger }}
     </div>
 
     <div class="dropdown-content">

@@ -12,12 +12,12 @@
   </head>
 
   <body>
-    @include('components.modal-destroy')
-    @include('components.notification')
-    @include('admin.layout.partials.header')
+    <x-modal-destroy />
+    <x-notification />
+    @include('components.layouts.admin-header')
 
     <main>
-      @yield('content')
+      {{ $slot }}
     </main>
   </body>
 </html>

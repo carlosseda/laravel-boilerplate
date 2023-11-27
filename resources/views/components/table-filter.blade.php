@@ -10,7 +10,7 @@
 
     <div class="filter-footer">
       <div class="filter-option filter-confirm">
-        <h4>Filtrar</h4>
+        <h4>Actualizar tabla</h4>
       </div>
       <div class="filter-option filter-cancel">
         <h4>Cancelar</h4>
