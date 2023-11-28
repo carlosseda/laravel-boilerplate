@@ -8,14 +8,10 @@
 
     <title>Maquetación</title>
 
-    @vite(['resources/sass/admin-app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/front-app.scss', 'resources/js/app.js'])
   </head>
 
   <body>
-    <x-modal-destroy />
-    <x-notification />
-    @include('components.layouts.admin-header')
-
     <main>
       {{ $slot }}
     </main>

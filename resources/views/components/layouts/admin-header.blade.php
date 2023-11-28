@@ -26,6 +26,6 @@
       </x-slot>
     </x-dropdown>
 
-    <x-menu></x-menu>
+    <x-menu />
   </div>
 </header>

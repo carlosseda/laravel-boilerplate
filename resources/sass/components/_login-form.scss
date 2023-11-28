@@ -1,0 +1,38 @@
+.login-form-container{
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  padding: 2rem;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login-form .form-element{
+  margin-bottom: 2rem;
+}
+
+.login-form-buttons{
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.login-form-buttons a{
+  color: hsl(0, 0%, 100%);
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.login-form-buttons a:hover{
+  color: $hover-color;
+}
+
+.login-button{
+  background-color: $green-color;
+  padding: 1rem 2rem;
+}
+
+.login-button button{
+  color: hsl(0, 0%, 100%);
+}

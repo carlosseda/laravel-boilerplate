@@ -1,4 +1,4 @@
-import './bootstrap';
+// import './bootstrap';
 import './webfont';
 import './menu';
 import './table';
