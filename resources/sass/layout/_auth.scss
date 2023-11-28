@@ -1,0 +1,14 @@
+body {
+  background-color: $primary-color;
+  margin: 0 auto;
+  min-height: 100vh;
+  width: 90%;
+}
+
+main{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+}

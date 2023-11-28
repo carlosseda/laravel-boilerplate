@@ -1,8 +1,8 @@
-.validation-error{
+.form-validation{
   background-color: $red-color;
 }
 
-.validation-error ul{
+.form-validation ul{
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

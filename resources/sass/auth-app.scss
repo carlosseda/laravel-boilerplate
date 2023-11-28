@@ -3,6 +3,7 @@
 @import "helpers/mixins";
 @import "base/normalize";
 @import "base/typography";
-@import "layout/front";
+@import "layout/auth";
 @import "components/form";
+@import "components/form-validation";
 @import "components/login-form";
