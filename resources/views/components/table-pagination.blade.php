@@ -1,47 +1,47 @@
-@props(['items'])
+@props(['records'])
 
 <div class="table-pagination">
   <div class="table-pagination-info">
     <div class="table-pagination-total">      
-      <span>{{$items->total()}} registros en total</span>
+      <span>{{$records->total()}} registros en total</span>
     </div>
     <div class="table-pagination-pages">
-      @if (!$items->onFirstPage())
-        <div class="table-pagination-page" data-pagination="{{$items->previousPageUrl()}}">
+      @if (!$records->onFirstPage())
+        <div class="table-pagination-page" data-pagination="{{$records->previousPageUrl()}}">
           <button><<</button>
         </div>
       @endif
 
-      <div class="table-pagination-page {{ $items->currentPage() == 1 ? 'active' : '' }}" data-pagination="{{$items->url(1)}}">
+      <div class="table-pagination-page {{ $records->currentPage() == 1 ? 'active' : '' }}" data-pagination="{{$records->url(1)}}">
         <button>1</button>
       </div>
 
-      @if($items->currentPage() > 2 && $items->lastPage() > 2)
+      @if($records->currentPage() > 2 && $records->lastPage() > 2)
         <div class="table-pagination-ellipsis">
           <span>...</span>
         </div>
       @endif
 
-      @if(!in_array($items->currentPage(), [1, $items->lastPage()]))
+      @if(!in_array($records->currentPage(), [1, $records->lastPage()]))
         <div class="table-pagination-page active">
-          <button>{{ $items->currentPage() }}</button>
+          <button>{{ $records->currentPage() }}</button>
         </div>
       @endif
 
-      @if($items->currentPage() < $items->lastPage() - 1 && $items->lastPage() > 2)
+      @if($records->currentPage() < $records->lastPage() - 1 && $records->lastPage() > 2)
         <div class="table-pagination-ellipsis">
           <span>...</span>
         </div>
       @endif
 
-      @if($items->lastPage() > 1)
-        <div class="table-pagination-page {{ $items->currentPage() == $items->lastPage() ? 'active' : '' }}" data-pagination="{{$items->url($items->lastPage())}}">
-          <button>{{ $items->lastPage() }}</button>
+      @if($records->lastPage() > 1)
+        <div class="table-pagination-page {{ $records->currentPage() == $records->lastPage() ? 'active' : '' }}" data-pagination="{{$records->url($records->lastPage())}}">
+          <button>{{ $records->lastPage() }}</button>
         </div>
       @endif
 
-      @if ($items->hasMorePages())
-        <div class="table-pagination-page" data-pagination="{{$items->nextPageUrl()}}">
+      @if ($records->hasMorePages())
+        <div class="table-pagination-page" data-pagination="{{$records->nextPageUrl()}}">
           <button>>></button>
         </div>
       @endif

@@ -8,7 +8,7 @@
 
     <title>Maquetación</title>
 
-    @vite(['resources/sass/front-app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/auth-app.scss'])
   </head>
 
   <body>

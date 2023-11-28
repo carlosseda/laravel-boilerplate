@@ -1,9 +1,9 @@
 @props(['tabs' => []])
 
 <div class="tabs">
-  @foreach ($tabs as $key => $label)
-    <div class="tab {{ $loop->first ? 'active' : '' }}" data-tab="{{ $key }}">
-      <button>{{ $label }}</button>
+  @foreach ($tabs as $tab)
+    <div class="tab {{ $loop->first ? 'active' : '' }}" data-tab="{{ $tab['name'] }}">
+      <button>{{ $tab['label'] }}</button>
     </div>
   @endforeach
 </div>

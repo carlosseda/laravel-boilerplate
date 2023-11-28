@@ -1,24 +1,7 @@
-<x-crud>
+<x-crud title="Usuarios">
   <x-slot name="table">
-    @if (count($users) == 0)
-      <x-admin-table-no-records />
-    @endif
-
-    <x-table-filter>
-      <x-form 
-        class="filter-form"
-        :tabs=false
-        :inputs="[
-          ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'full-width'],
-          ['name' => 'email', 'type' => 'email', 'label' => 'Email', 'width' => 'full-width']
-        ]"
-      />
-    </x-table-filter>
-
-    <x-admin-table-buttons />
-
-    <x-admin-table-records 
-      :records="$users" 
+    <x-admin-table
+      :records="$users"
       :fields="[
         'email' => 'Email',
         'name' => 'Nombre',
@@ -26,29 +9,19 @@
       ]" 
       editRoute="users_edit" 
       destroyRoute="users_destroy"
+      :filterInputs="[
+        ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'full-width'],
+        ['name' => 'email', 'type' => 'email', 'label' => 'Email', 'width' => 'full-width']
+      ]"
     />
-
-    <x-table-pagination :items="$users" />
   </x-slot>
 
   <x-slot name="form">
-    <div class="form-top-bar">
-      <x-tabs
-        :tabs="[
-          'general' => 'General',
-          'images' => 'Imágenes',
-        ]"
-      />
-
-      <x-admin-form-buttons 
-        createRoute="users_create" 
-        storeRoute="users_store"
-      />
-    </div>
-
-    <x-form 
-      class="admin-form"
-      :tabs=true
+    <x-admin-form 
+      :tabs="[
+        ['name' => 'general', 'label' => 'General'],
+        ['name' => 'images', 'label' => 'Imágenes']
+      ]"
       :inputs="[
         'general' => [
           ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'half-width'],
@@ -60,6 +33,8 @@
           ['name' => 'image', 'type' => 'file', 'label' => 'Imagen', 'width' => 'full-width'],
         ],
       ]"
+      createRoute="users_create"
+      storeRoute="users_store"
       :record="$user"
     />
   </x-slot>

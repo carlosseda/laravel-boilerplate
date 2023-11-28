@@ -6,6 +6,11 @@
 ])
 
 <div class="table-records">
+  @if (count($records) == 0)
+    <div class="table-no-records">
+      <p>No hay registros</p>
+    </div>
+  @endif
   @foreach ($records as $record)
     <article class="table-record">
       <div class="table-record-buttons">

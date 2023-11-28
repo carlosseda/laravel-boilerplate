@@ -18,17 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+
+  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
   Route::resource('usuarios', 'App\Http\Controllers\Admin\UserController', [
     'parameters' => [
@@ -40,6 +36,19 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
       'edit' => 'users_edit',
       'store' => 'users_store',
       'destroy' => 'users_destroy',
+    ]
+  ]);
+
+  Route::resource('eventos', 'App\Http\Controllers\Admin\EventController', [
+    'parameters' => [
+        'eventos' => 'event', 
+    ],
+    'names' => [
+      'index' => 'events',
+      'create' => 'events_create',
+      'edit' => 'events_edit',
+      'store' => 'events_store',
+      'destroy' => 'events_destroy',
     ]
   ]);
 });
