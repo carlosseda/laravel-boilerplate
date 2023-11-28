@@ -1,12 +1,13 @@
 export default (() => {
 
-  document.addEventListener("showValidationErrors", event => {
+  const formSection = document.querySelector('.form');
+
+  document.addEventListener("showformValidations", event => {
 
     const errors = event.detail.errors;
-    const form = event.detail.form;
-    const validationError = form.querySelector('.validation-error');
+    const formValidation = event.detail.formValidation;
     const errorMessage = document.createElement('ul');
-
+    
     Object.keys(errors).forEach(function(key) {
       let input = document.querySelector(`[name="${key}"]`);
       input.classList.add('error');
@@ -16,15 +17,11 @@ export default (() => {
       errorMessage.appendChild(error);
     })
 
-    if (validationError.firstChild) {
-      validationError.removeChild(validationError.firstChild);
-    }
-
-    validationError.appendChild(errorMessage);   
+    formValidation.innerHTML = errorMessage.outerHTML;   
 
   });
 
-  document.addEventListener("input", event => {
+  formSection?.addEventListener("input", event => {
     if (event.target.classList.contains('error')) {
       event.target.classList.remove('error');
     }

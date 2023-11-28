@@ -56,9 +56,9 @@ export default (() => {
 
           const json = await error.json();
 
-          document.dispatchEvent(new CustomEvent('showValidationErrors', {
+          document.dispatchEvent(new CustomEvent('showformValidations', {
             detail: {
-              form: form,
+              formValidation: form.previousElementSibling,
               errors: json.errors
             }
           }))
@@ -78,9 +78,9 @@ export default (() => {
       }
     }
 
-    if (event.target.closest('.cleate-button')) {
+    if (event.target.closest('.create-button')) {
 
-      const cleanButton = event.target.closest('.clean-button')
+      const cleanButton = event.target.closest('.create-button')
       const endpoint = cleanButton.dataset.endpoint;
 
       try{
