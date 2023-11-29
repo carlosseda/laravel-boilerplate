@@ -3,7 +3,7 @@
 <div class="table-pagination">
   <div class="table-pagination-info">
     <div class="table-pagination-total">      
-      <span>{{$records->total()}} registros en total</span>
+      <span>{{$records->total()}} {{__('admin/pagination.total')}}</span>
     </div>
     <div class="table-pagination-pages">
       @if (!$records->onFirstPage())

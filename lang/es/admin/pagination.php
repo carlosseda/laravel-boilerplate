@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'first_page' => 'Primera',
+  'total' => 'registros en total.',
 ];
