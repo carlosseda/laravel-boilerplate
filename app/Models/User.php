@@ -15,7 +15,7 @@ class User extends Authenticatable
   use SoftDeletes;
 
   protected $guarded = [];
-  protected $dates = ['deleted_at'];
+  protected $dates = ['deleted_at'];  
 
   protected $hidden = [
     'password',
@@ -26,4 +26,50 @@ class User extends Authenticatable
     'email_verified_at' => 'datetime',
     'password' => 'hashed',
   ];
+
+  public function getTableStructure()
+  {
+    return [
+      'columns' => [
+        'name' => 'Nombre',
+        'email' => 'Email',
+        'created_at' => 'Fecha de creación',
+        'updated_at' => 'Fecha de actualización',
+      ],
+      'filters' => [
+        ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'full-width'],
+        ['name' => 'email', 'type' => 'email', 'label' => 'Email', 'width' => 'full-width']
+      ],
+      'tableButtons' => ['filterButton'],
+      'recordButtons' => [
+        'editButton' => 'users_edit',
+        'destroyButton' => 'users_destroy',
+      ]
+    ];
+  }
+
+  public function getFormStructure()
+  {
+    return [
+      'tabs' => [
+        ['name' => 'general', 'label' => 'General'],
+        ['name' => 'images', 'label' => 'Imágenes']
+      ],
+      'formButtons' => [
+        'createButton' => 'users_create',
+        'storeButton' => 'users_store',
+      ],
+      'inputs' => [
+        'general' => [
+          ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'half-width'],
+          ['name' => 'email', 'type' => 'email', 'label' => 'Email', 'width' => 'half-width'],
+          ['name' => 'password', 'type' => 'password', 'label' => 'Contraseña', 'width' => 'half-width'],
+          ['name' => 'password_confirmation', 'type' => 'password', 'label' => 'Confirmar contraseña', 'width' => 'half-width'],
+        ],
+        'images' => [
+          ['name' => 'image', 'type' => 'file', 'label' => 'Imagen', 'width' => 'full-width'],
+        ],
+      ]
+    ];
+  }
 }

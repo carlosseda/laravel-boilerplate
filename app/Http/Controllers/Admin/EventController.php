@@ -15,23 +15,28 @@ class EventController extends Controller
   public function index()
   {
     try{
-      $view = View::make('admin.events.index')
-      ->with('event', $this->event)
-      ->with('events', $this->event
-      ->orderBy('created_at', 'desc')
-      ->paginate(10));
-  
+
+      $events = $this->event
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+      
       if(request()->ajax()) {
-          
-        $sections = $view->renderSections(); 
-  
+            
         return response()->json([
-          'table' => $sections['table'],
-          'form' => $sections['form'],
+          'table' => view('components.admin-table', ['tableStructure' => $this->event->getTableStructure(), 'records' => $events])->render(),
+          'form' => view('components.admin-form', ['formStructure' => $this->event->getFormStructure(), 'record' => $this->event])->render()
         ], 200); 
+
+      }else{
+
+        $view = View::make('admin.events.index')
+        ->with('tableStructure', $this->event->getTableStructure())
+        ->with('formStructure', $this->event->getFormStructure())
+        ->with('records', $events)
+        ->with('record', $this->event);
+
+        return $view;
       }
-  
-      return $view;
     }
     catch(\Exception $e){
       return response()->json([
@@ -42,27 +47,15 @@ class EventController extends Controller
 
   public function create()
   {
-    try{
-      $view = View::make('admin.events.index')
-      ->with('event', $this->event)
-      ->with('events', $this->event
-      ->orderBy('created_at', 'desc')
-      ->paginate(10));
-  
-      if(request()->ajax()) {
-  
-        $sections = $view->renderSections(); 
-  
+    try {
+      if (request()->ajax()) {
         return response()->json([
-          'form' => $sections['form'],
+          'form' => view('components.admin-form', ['formStructure' => $this->event->getFormStructure(), 'record' => $this->event])->render(),
         ], 200);
       }
-  
-      return $view;
-    }
-    catch(\Exception $e){
+    } catch (\Exception $e) {
       return response()->json([
-        'message' => \Lang::get('admin/notification.error'),
+          'message' =>  \Lang::get('admin/notification.error'),
       ], 500);
     }
   }
@@ -70,36 +63,26 @@ class EventController extends Controller
   public function store(EventRequest $request)
   {            
     try{
-      $eventData = [
-        'name' => $request->input('name'),
-        'address' => $request->input('address'),
-        'price' => $request->input('price'),
-        'date' => $request->input('date'),
-        'time' => $request->input('time'),
-      ];
+      $data = $request->validated();
   
-      $event = event::updateOrCreate([
+      $this->event->updateOrCreate([
         'id' => $request->input('id')
-      ], $eventData);
+      ], $data);
   
+      $events = $this->event
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
       if ($request->filled('id')){
         $message = \Lang::get('admin/notification.update');
       }else{
         $message = \Lang::get('admin/notification.create');
       }
-  
-      $view = View::make('admin.events.index')
-      ->with('event', $this->event)
-      ->with('events', $this->event
-      ->orderBy('created_at', 'desc')
-      ->paginate(10))
-      ->renderSections();        
-  
+      
       return response()->json([
-        'table' => $view['table'],
-        'form' => $view['form'],
+        'table' => view('components.admin-table', ['tableStructure' => $this->event->getTableStructure(), 'records' => $events])->render(),
+        'form' => view('components.admin-form', ['formStructure' => $this->event->getFormStructure(), 'record' => $this->event])->render(),
         'message' => $message,
-        'id' => $event->id,
       ], 200);
     }
     catch(\Exception $e){
@@ -109,25 +92,12 @@ class EventController extends Controller
     }
   }
 
-  public function edit(event $event)
+  public function edit(Event $event)
   {
     try{
-      $view = View::make('admin.events.index')
-      ->with('event', $event)
-      ->with('events', $this->event
-      ->orderBy('created_at', 'desc')
-      ->paginate(10));
-  
-      if(request()->ajax()) {
-  
-        $sections = $view->renderSections(); 
-  
-        return response()->json([
-          'form' => $sections['form'],
-        ]); 
-      }
-  
-      return $view;
+      return response()->json([
+        'form' => view('components.admin-form', ['formStructure' => $this->event->getFormStructure(), 'record' => $event])->render(),
+      ], 200);
     }
     catch(\Exception $e){
       return response()->json([
@@ -136,22 +106,20 @@ class EventController extends Controller
     }
   }
 
-  public function destroy(event $event)
+  public function destroy(Event $event)
   {
     try{
       $event->delete();
-      $message = \Lang::get('admin/notification.destroy');
-  
-      $view = View::make('admin.events.index')
-      ->with('event', $this->event)
-      ->with('events', $this->event
+
+      $events = $this->event
       ->orderBy('created_at', 'desc')
-      ->paginate(10))
-      ->renderSections();
+      ->paginate(10);
+
+      $message = \Lang::get('admin/notification.destroy');
       
       return response()->json([
-        'table' => $view['table'],
-        'form' => $view['form'],
+        'table' => view('components.admin-table', ['tableStructure' => $this->event->getTableStructure(), 'records' => $events])->render(),
+        'form' => view('components.admin-form', ['formStructure' => $this->event->getFormStructure(), 'record' => $this->event])->render(),
         'message' => $message,
       ], 200);
     }

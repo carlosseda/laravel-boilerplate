@@ -1,22 +1,18 @@
 @props([
-  'tabs' => [],
-  'inputs' => [],
-  'createRoute' => null,
-  'storeRoute' => null,
+  'formStructure' => [],
   'record' => null,
 ])
 
 <div class="form-top-bar">
 
-  @if($tabs)
+  @if($formStructure['tabs'])
     <x-tabs
-      :tabs="$tabs"
+      :tabs="$formStructure['tabs']"
     />
   @endif
 
   <x-admin-form-buttons 
-    :createRoute="$createRoute" 
-    :storeRoute="$storeRoute"
+    :formButtons="$formStructure['formButtons']" 
   />
 </div>
 
@@ -27,7 +23,7 @@
   <input type="hidden" name="id" value="{{$record?->id}}">
 
   <div class="tabs-content">
-    @foreach ($inputs as $key => $fields)
+    @foreach ($formStructure['inputs'] as $key => $fields)
       <div class="tab-content {{ $loop->first ? 'active' : '' }}" data-tab="{{ $key }}">
         <div class="form-elements">
           @foreach ($fields as $field)
@@ -62,7 +58,7 @@
                       </div>
                     @endforeach
                   @else
-                    <input type="{{ $field['type'] }}" name="{{ $field['name'] }}" id="{{ $field['name'] }}" value="{{ $record?->{$field['name']} }}">
+                    <input type="{{ $field['type'] }}" name="{{ $field['name'] }}" id="{{ $field['name'] }}" value="{{ $field['type'] != 'password' ? $record?->{$field['name']} : '' }}">
                   @endif
                 @endif
               </div>

@@ -3,7 +3,7 @@
 <div class="table-pagination">
   <div class="table-pagination-info">
     <div class="table-pagination-total">      
-      <span>{{$records->total()}} {{__('admin/pagination.total')}}</span>
+      <span>{{trans_choice('admin/pagination.total',  $records->total(), ['count' => $records->total()])}}</span>
     </div>
     <div class="table-pagination-pages">
       @if (!$records->onFirstPage())

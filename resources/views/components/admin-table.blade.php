@@ -1,19 +1,18 @@
 @props([
+  'tableStructure' => [],
   'records' => [],
-  'fields' => [],
-  'editRoute' => null,
-  'destroyRoute' => null,
-  'filterInputs' => []
 ])
 
-<x-admin-table-filter :inputs="$filterInputs" />
-<x-admin-table-buttons />
+@if(in_array('filterButton', $tableStructure['tableButtons']))
+  <x-admin-table-filter :filters="$tableStructure['filters']" />
+@endif
+
+<x-admin-table-buttons :tableButtons="$tableStructure['tableButtons']" />
 
 <x-admin-table-records 
   :records="$records"
-  :fields="$fields" 
-  :editRoute="$editRoute" 
-  :destroyRoute="$destroyRoute"
+  :columns="$tableStructure['columns']" 
+  :recordButtons="$tableStructure['recordButtons']" 
 />
 
 <x-table-pagination :records="$records" />

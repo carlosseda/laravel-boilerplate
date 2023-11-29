@@ -11,4 +11,52 @@ class Event extends Model
 
   protected $guarded = [];
   protected $dates = ['deleted_at'];
+
+  public function getTableStructure()
+  {
+    return [
+      'columns' => [
+        'name' => 'Nombre',
+        'date' => 'Fecha',
+        'time' => 'Hora'
+      ],
+      'filters' => [
+        ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'full-width'],
+        ['name' => 'date', 'type' => 'date', 'label' => 'Fecha', 'width' => 'full-width'],
+        ['name' => 'time', 'type' => 'time', 'label' => 'Hora', 'width' => 'full-width']
+      ],
+      'tableButtons' => ['filterButton'],
+      'recordButtons' => [
+        'editButton' => 'events_edit',
+        'destroyButton' => 'events_destroy',
+      ]
+    ];
+  }
+
+  public function getFormStructure()
+  {
+    return [
+      'tabs' => [
+        ['name' => 'general', 'label' => 'General'],
+        ['name' => 'images', 'label' => 'Imágenes']
+      ],
+      'formButtons' => [
+        'createButton' => 'events_create',
+        'storeButton' => 'events_store',
+      ],
+      'inputs' => [
+        'general' => [
+          ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'full-width'],
+          ['name' => 'address', 'type' => 'text', 'label' => 'Dirección', 'width' => 'half-width'],
+          ['name' => 'price', 'type' => 'number', 'label' => 'Precio', 'width' => 'half-width'],
+          ['name' => 'date', 'type' => 'date', 'label' => 'Fecha', 'width' => 'half-width'],
+          ['name' => 'time', 'type' => 'time', 'label' => 'Hora', 'width' => 'half-width'],
+          ['name' => 'description', 'type' => 'textarea', 'label' => 'Descripción', 'width' => 'full-width'],
+        ],
+        'images' => [
+          ['name' => 'featured_image', 'type' => 'file', 'label' => 'Imagen destacada', 'width' => 'full-width'],
+        ],
+      ]
+    ];
+  }
 }

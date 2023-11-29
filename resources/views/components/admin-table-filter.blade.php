@@ -1,5 +1,5 @@
 @props([
-  'inputs' => [],
+  'filters' => [],
   'tabs' => false,
 ])
 
@@ -60,7 +60,7 @@
           </div>
         @else
           <div class="form-elements">
-            @foreach ($inputs as $field)
+            @foreach ($filters as $field)
               <div class="form-element {{$field['width']}}">
                 <div class="form-element-label">
                   <label for="{{ $field['name'] }}">{{ $field['label'] }}</label>

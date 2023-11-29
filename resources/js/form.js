@@ -98,6 +98,8 @@ export default (() => {
         if (response.status === 200) {  
 
           const json = await response.json();
+
+          console.log(json.form);
   
           document.dispatchEvent(new CustomEvent('refreshForm', {
             detail: {

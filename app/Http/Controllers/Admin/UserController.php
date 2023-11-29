@@ -15,23 +15,28 @@ class UserController extends Controller
   public function index()
   {
     try{
-      $view = View::make('admin.users.index')
-      ->with('user', $this->user)
-      ->with('users', $this->user
-      ->orderBy('created_at', 'desc')
-      ->paginate(10));
-  
+
+      $users = $this->user
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+      
       if(request()->ajax()) {
-          
-        $sections = $view->renderSections(); 
-  
+            
         return response()->json([
-          'table' => $sections['table'],
-          'form' => $sections['form'],
+          'table' => view('components.admin-table', ['tableStructure' => $this->user->getTableStructure(), 'records' => $users])->render(),
+          'form' => view('components.admin-form', ['formStructure' => $this->user->getFormStructure(), 'record' => $this->user])->render()
         ], 200); 
+
+      }else{
+
+        $view = View::make('admin.users.index')
+        ->with('tableStructure', $this->user->getTableStructure())
+        ->with('formStructure', $this->user->getFormStructure())
+        ->with('records', $users)
+        ->with('record', $this->user);
+
+        return $view;
       }
-  
-      return $view;
     }
     catch(\Exception $e){
       return response()->json([
@@ -42,27 +47,15 @@ class UserController extends Controller
 
   public function create()
   {
-    try{
-      $view = View::make('admin.users.index')
-      ->with('user', $this->user)
-      ->with('users', $this->user
-      ->orderBy('created_at', 'desc')
-      ->paginate(10));
-  
-      if(request()->ajax()) {
-  
-        $sections = $view->renderSections(); 
-  
+    try {
+      if (request()->ajax()) {
         return response()->json([
-          'form' => $sections['form'],
+          'form' => view('components.admin-form', ['formStructure' => $this->user->getFormStructure(), 'record' => $this->user])->render(),
         ], 200);
       }
-  
-      return $view;
-    }
-    catch(\Exception $e){
+    } catch (\Exception $e) {
       return response()->json([
-        'message' => \Lang::get('admin/notification.error'),
+          'message' =>  \Lang::get('admin/notification.error'),
       ], 500);
     }
   }
@@ -70,42 +63,38 @@ class UserController extends Controller
   public function store(UserRequest $request)
   {            
     try{
-      $userData = [
-        'name' => $request->input('name'),
-        'email' => $request->input('email'),
-      ];
-  
-      if ($request->filled('password')) {
-        $userData['password'] = bcrypt($request->input('password'));
+
+      $data = $request->validated();
+
+      unset($data['password_confirmation']);
+      
+      if (!$request->filled('password') && $request->filled('id')){
+        unset($data['password']);
       }
   
-      $user = User::updateOrCreate([
+      $this->user->updateOrCreate([
         'id' => $request->input('id')
-      ], $userData);
-  
+      ], $data);
+
+      $users = $this->user
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
       if ($request->filled('id')){
         $message = \Lang::get('admin/notification.update');
       }else{
         $message = \Lang::get('admin/notification.create');
       }
-  
-      $view = View::make('admin.users.index')
-      ->with('user', $this->user)
-      ->with('users', $this->user
-      ->orderBy('created_at', 'desc')
-      ->paginate(10))
-      ->renderSections();        
-  
+      
       return response()->json([
-        'table' => $view['table'],
-        'form' => $view['form'],
+        'table' => view('components.admin-table', ['tableStructure' => $this->user->getTableStructure(), 'records' => $users])->render(),
+        'form' => view('components.admin-form', ['formStructure' => $this->user->getFormStructure(), 'record' => $this->user])->render(),
         'message' => $message,
-        'id' => $user->id,
       ], 200);
     }
     catch(\Exception $e){
       return response()->json([
-        'message' => \Lang::get('admin/notification.error'),
+        'message' => $e->getMessage(),
       ], 500);
     }
   }
@@ -113,22 +102,9 @@ class UserController extends Controller
   public function edit(User $user)
   {
     try{
-      $view = View::make('admin.users.index')
-      ->with('user', $user)
-      ->with('users', $this->user
-      ->orderBy('created_at', 'desc')
-      ->paginate(10));
-  
-      if(request()->ajax()) {
-  
-        $sections = $view->renderSections(); 
-  
-        return response()->json([
-          'form' => $sections['form'],
-        ]); 
-      }
-  
-      return $view;
+      return response()->json([
+        'form' => view('components.admin-form', ['formStructure' => $this->user->getFormStructure(), 'record' => $user])->render(),
+      ], 200);
     }
     catch(\Exception $e){
       return response()->json([
@@ -141,18 +117,16 @@ class UserController extends Controller
   {
     try{
       $user->delete();
-      $message = \Lang::get('admin/notification.destroy');
-  
-      $view = View::make('admin.users.index')
-      ->with('user', $this->user)
-      ->with('users', $this->user
+
+      $users = $this->user
       ->orderBy('created_at', 'desc')
-      ->paginate(10))
-      ->renderSections();
+      ->paginate(10);
+
+      $message = \Lang::get('admin/notification.destroy');
       
       return response()->json([
-        'table' => $view['table'],
-        'form' => $view['form'],
+        'table' => view('components.admin-table', ['tableStructure' => $this->user->getTableStructure(), 'records' => $users])->render(),
+        'form' => view('components.admin-form', ['formStructure' => $this->user->getFormStructure(), 'record' => $this->user])->render(),
         'message' => $message,
       ], 200);
     }
