@@ -7,15 +7,19 @@ export default (() => {
     event.preventDefault();
 
     if (event.target.closest('.tab')) {
-      const tab = event.target.closest('.tab');
-      tab.parentElement.querySelector('.active').classList.remove('active');
-      tab.classList.add('active');
 
-      console.log(tab.closest('section'));
-      console.log(tab.closest('section').querySelector(".tab-content.active"));
+      if (event.target.closest('.tab').classList.contains('active')) {
+        return;
+      }
+      
+      const tabClicked = event.target.closest('.tab');
+      const tabActive = tabClicked.parentElement.querySelector('.active');
+      
+      tabClicked.classList.add('active');
+      tabActive.classList.remove('active');
 
-      tab.closest('section').querySelector(".tab-content.active").classList.remove('active');
-      tab.closest('section').querySelector(`.tab-content[data-tab="${tab.dataset.tab}"]`).classList.add('active')
+      tabClicked.closest('section').querySelector(`.tab-content.active[data-tab="${tabActive.dataset.tab}"]`).classList.remove('active');
+      tabClicked.closest('section').querySelector(`.tab-content[data-tab="${tabClicked.dataset.tab}"]`).classList.add('active');
     }
   });
   

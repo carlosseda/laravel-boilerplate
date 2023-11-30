@@ -7,113 +7,178 @@
 
   <input type="hidden" name="id" value="{{$record?->id}}">
 
-  <div class="tabs-content">
-    @foreach ($inputs as $section => $content)
-      <div class="tab-content {{ $loop->first ? 'active' : '' }}" data-tab="{{ $section }}">
-        <div class="form-elements">
-          @isset($content['noLocale'])
-            @foreach ($content['noLocale'] as $formElement)
-              <div class="form-element {{$formElement['width']}}">
-                <div class="form-element-label">
-                  <label for="{{ $formElement['name'] }}">{{ $formElement['label'] }}</label>
-                </div>
-                <div class="form-element-input">
-                  @if ($formElement['type'] === 'textarea')
-                    <textarea name="{{ $formElement['name'] }}" id="{{ $formElement['name'] }}">{{ $record?->{$formElement['name']} }}</textarea>
-                  @elseif ($formElement['type'] === 'file')
-                    <input type="file" name="{{ $formElement['name'] }}" id="{{ $formElement['name'] }}">
-                  @elseif ($formElement['type'] === 'select')
-                    <select name="{{ $formElement['name'] }}" id="{{ $formElement['name'] }}">
-                      @foreach ($formElement['options'] as $option)
-                        <option value="{{ $option['value'] }}" {{ $record?->{$formElement['name']} == $option['value'] ? 'selected' : '' }}>{{ $option['label'] }}</option>
-                      @endforeach
-                    </select>
-                  @else
-                    @if ($formElement['type'] === 'checkbox')
-                      @foreach ($formElement['options'] as $option)
-                        <div class="form-element-checkbox">
-                          <input type="checkbox" name="{{ $formElement['name'] }}[]" id="{{ $formElement['name'] }}-{{ $option['value'] }}" value="{{ $option['value'] }}" {{ in_array($option['value'], $record?->{$formElement['name']} ?? []) ? 'checked' : '' }}>
-                          <label for="{{ $formElement['name'] }}-{{ $option['value'] }}">{{ $option['label'] }}</label>
-                        </div>
-                      @endforeach
-                    @elseif ($formElement['type'] === 'radio')
-                      @foreach ($formElement['options'] as $option)
-                        <div class="form-element-radio">
-                          <input type="radio" name="{{ $formElement['name'] }}" id="{{ $formElement['name'] }}-{{ $option['value'] }}" value="{{ $option['value'] }}" {{ $record?->{$formElement['name']} == $option['value'] ? 'checked' : '' }}>
-                          <label for="{{ $formElement['name'] }}-{{ $option['value'] }}">{{ $option['label'] }}</label>
-                        </div>
-                      @endforeach
-                    @else
-                      <input type="{{ $formElement['type'] }}" name="{{ $formElement['name'] }}" id="{{ $formElement['name'] }}" value="{{ $formElement['type'] != 'password' ? $record?->{$formElement['name']} : '' }}">
-                    @endif
-                  @endif
-                </div>
-              </div>
-            @endforeach
-          @endIf
-
-          @isset($content['locale'])
-
-            <section class="locale-inputs">
-
-              <div class="locale-bar">
-                <x-tabs
-                  :tabs="$languages"
+  @foreach ($inputs as $section => $content)
+    <div class="tab-content {{ $loop->first ? 'active' : '' }}" data-tab="{{ $section }}">
+      <div class="form-elements">
+        @isset($content['noLocale'])
+          @foreach ($content['noLocale'] as $formElement)
+            @switch($formElement['type'])
+              @case('textarea')
+                <x-form.textarea 
+                  :name="$formElement['name']"
+                  :width="$formElement['width']" 
+                  :label="$formElement['label']" 
+                  :value="$record?->{$formElement['name']}"
+                  :inputAttributes="$formElement['attributes'] ?? ''"
                 />
-              </div>
+                @break
 
-              @foreach($languages as $language)
+              @case('image')
+                <x-form.file
+                  :name="$formElement['name']"
+                  :width="$formElement['width']" 
+                  :label="$formElement['label']" 
+                  :value="$record?->{$formElement['name']}"
+                  :inputAttributes="$formElement['attributes'] ?? ''"
+                />
+                @break
+      
+              @case('file')
+                <x-form.file
+                  :name="$formElement['name']"
+                  :width="$formElement['width']" 
+                  :label="$formElement['label']" 
+                  :value="$record?->{$formElement['name']}"
+                  :inputAttributes="$formElement['attributes'] ?? ''"
+                />
+                @break
+      
+              @case('select')
 
-                <div class="tab-content {{ $loop->first ? 'active' : '' }}" data-tab="{{ $language['name'] }}">
+                <x-form.select
+                  :name="$formElement['name']"
+                  :width="$formElement['width']" 
+                  :label="$formElement['label']" 
+                  :value="$record?->{$formElement['name']}"
+                  :options="$formElement['options']"
+                  :inputAttributes="$formElement['attributes'] ?? ''"
+                />
+                @break
+      
+              @case('checkbox')
 
-                  <div class="form-elements">
-                    @foreach ($content['locale'] as $formElement)
-                      <div class="form-element {{$formElement['width']}}">
-                        <div class="form-element-label">
-                          <label for="{{ $formElement['name'] }}">{{ $formElement['label'] }}</label>
-                        </div>
-                        <div class="form-element-input">
-                          @if ($formElement['type'] === 'textarea')
-                            <textarea name="{{ $formElement['name'] }}" id="{{ $formElement['name'] }}">{{ $record?->{$formElement['name']} }}</textarea>
-                          @elseif ($formElement['type'] === 'file')
-                            <input type="file" name="{{ $formElement['name'] }}" id="{{ $formElement['name'] }}">
-                          @elseif ($formElement['type'] === 'select')
-                            <select name="{{ $formElement['name'] }}" id="{{ $formElement['name'] }}">
-                              @foreach ($formElement['options'] as $option)
-                                <option value="{{ $option['value'] }}" {{ $record?->{$formElement['name']} == $option['value'] ? 'selected' : '' }}>{{ $option['label'] }}</option>
-                              @endforeach
-                            </select>
-                          @else
-                            @if ($formElement['type'] === 'checkbox')
-                              @foreach ($formElement['options'] as $option)
-                                <div class="form-element-checkbox">
-                                  <input type="checkbox" name="{{ $formElement['name'] }}[]" id="{{ $formElement['name'] }}-{{ $option['value'] }}" value="{{ $option['value'] }}" {{ in_array($option['value'], $record?->{$formElement['name']} ?? []) ? 'checked' : '' }}>
-                                  <label for="{{ $formElement['name'] }}-{{ $option['value'] }}">{{ $option['label'] }}</label>
-                                </div>
-                              @endforeach
-                            @elseif ($formElement['type'] === 'radio')
-                              @foreach ($formElement['options'] as $option)
-                                <div class="form-element-radio">
-                                  <input type="radio" name="{{ $formElement['name'] }}" id="{{ $formElement['name'] }}-{{ $option['value'] }}" value="{{ $option['value'] }}" {{ $record?->{$formElement['name']} == $option['value'] ? 'checked' : '' }}>
-                                  <label for="{{ $formElement['name'] }}-{{ $option['value'] }}">{{ $option['label'] }}</label>
-                                </div>
-                              @endforeach
-                            @else
-                              <input type="{{ $formElement['type'] }}" name="{{ $formElement['name'] }}" id="{{ $formElement['name'] }}" value="{{ $formElement['type'] != 'password' ? $record?->{$formElement['name']} : '' }}">
-                            @endif
-                          @endif
-                        </div>
-                      </div>
-                    @endforeach
-                  </div>
+                <x-form.checkbox
+                  :name="$formElement['name']"
+                  :width="$formElement['width']"
+                  :label="$formElement['label']"
+                  :value="$record?->{$formElement['name']}"
+                  :options="$formElement['options']"
+                  :inputAttributes="$formElement['attributes'] ?? ''"
+                />
+                @break
+      
+              @case('radio')
+
+                <x-form.radio
+                  :name="$formElement['name']"
+                  :width="$formElement['width']"
+                  :label="$formElement['label']"
+                  :value="$record?->{$formElement['name']}"
+                  :options="$formElement['options']"
+                  :inputAttributes="$formElement['attributes'] ?? ''"
+                />
+                @break
+      
+              @default
+                <x-form.input
+                  :name="$formElement['name']"
+                  :width="$formElement['width']"
+                  :label="$formElement['label']"
+                  :value="$record?->{$formElement['name']}"
+                  :type="$formElement['type']"
+                  :inputAttributes="$formElement['attributes'] ?? []"
+                />
+                @break
+            @endswitch
+          @endforeach
+        @endif
+
+        @isset($content['locale'])
+
+          <section class="locale-inputs">
+
+            <div class="locale-bar">
+              <x-tabs
+                :tabs="$languages"
+              />
+            </div>
+
+            @foreach($languages as $language)
+
+              <div class="tab-content {{ $loop->first ? 'active' : '' }}" data-tab="{{ $language['name'] }}">
+
+                <div class="form-elements">
+                  @foreach ($content['locale'] as $formElement)
+                    @switch($formElement['type'])
+                      @case('textarea')
+                        <x-form.textarea 
+                          :width="$formElement['width']" 
+                          :name="$formElement['name']" 
+                          :label="$formElement['label']" 
+                          :value="$record?->{$formElement['name']}"
+                        />
+                        @break
+              
+                      @case('file')
+                        <x-form.file
+                          :width="$formElement['width']" 
+                          :name="$formElement['name']" 
+                          :label="$formElement['label']" 
+                          :value="$record?->{$formElement['name']}"
+                        />
+                        @break
+              
+                      @case('select')
+        
+                        <x-form.select
+                          :width="$formElement['width']" 
+                          :name="$formElement['name']" 
+                          :label="$formElement['label']" 
+                          :value="$record?->{$formElement['name']}"
+                          :options="$formElement['options']"
+                        />
+                        @break
+              
+                      @case('checkbox')
+        
+                        <x-form.checkbox
+                          :width="$formElement['width']"
+                          :name="$formElement['name']"
+                          :label="$formElement['label']"
+                          :value="$record?->{$formElement['name']}"
+                          :options="$formElement['options']"
+                        />
+                        @break
+              
+                      @case('radio')
+        
+                        <x-form.radio
+                          :width="$formElement['width']"
+                          :name="$formElement['name']"
+                          :label="$formElement['label']"
+                          :value="$record?->{$formElement['name']}"
+                          :options="$formElement['options']"
+                        />
+                        @break
+              
+                      @default
+                        <x-form.input
+                          :width="$formElement['width']"
+                          :name="$formElement['name']"
+                          :label="$formElement['label']"
+                          :value="$record?->{$formElement['name']}"
+                          :type="$formElement['type']"
+                          :atributes="$formElement['atributes'] ?? ''"
+                        />
+                        @break
+                    @endswitch
+                  @endforeach
                 </div>
-              @endforeach   
-            </section>
-          @endisset
-        </div>
+              </div>
+            @endforeach   
+          </section>
+        @endisset
       </div>
-
-    @endforeach
-    
-  </div>
+    </div>
+  @endforeach
 </form>
