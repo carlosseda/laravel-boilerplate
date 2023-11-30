@@ -4,18 +4,15 @@ export default (() => {
 
   main?.addEventListener('click', (event) => {
 
+    event.preventDefault();
+
     if (event.target.closest('.tab')) {
-      
       const tab = event.target.closest('.tab');
-      const tabsContent = document.querySelector('.tabs-content');
-      const tabContent = tabsContent.querySelector(`[data-tab="${tab.dataset.tab}"]`);
-
       tab.parentElement.querySelector('.active').classList.remove('active');
-      tabContent.parentElement.querySelector('.active').classList.remove('active')
-
       tab.classList.add('active');
-      tabContent.classList.add('active');
 
+      tab.closest('section').querySelector(".tab-content.active").classList.remove('active');
+      tab.closest('section').querySelector(`.tab-content[data-tab="${tab.dataset.tab}"]`).classList.add('active')
     }
   });
   

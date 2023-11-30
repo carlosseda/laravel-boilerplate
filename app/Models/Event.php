@@ -46,15 +46,22 @@ class Event extends Model
       ],
       'inputs' => [
         'general' => [
-          ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'full-width'],
-          ['name' => 'address', 'type' => 'text', 'label' => 'Dirección', 'width' => 'half-width'],
-          ['name' => 'price', 'type' => 'number', 'label' => 'Precio', 'width' => 'half-width'],
-          ['name' => 'date', 'type' => 'date', 'label' => 'Fecha', 'width' => 'half-width'],
-          ['name' => 'time', 'type' => 'time', 'label' => 'Hora', 'width' => 'half-width'],
-          ['name' => 'description', 'type' => 'textarea', 'label' => 'Descripción', 'width' => 'full-width'],
+          'noLocale' => [
+            ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'full-width'],
+            ['name' => 'address', 'type' => 'text', 'label' => 'Dirección', 'width' => 'half-width'],
+            ['name' => 'price', 'type' => 'number', 'label' => 'Precio', 'width' => 'half-width'],
+            ['name' => 'date', 'type' => 'date', 'label' => 'Fecha', 'width' => 'half-width'],
+            ['name' => 'time', 'type' => 'time', 'label' => 'Hora', 'width' => 'half-width'],
+          ],
+          'locale' => [
+            ['name' => 'title', 'type' => 'text', 'label' => 'Título', 'width' => 'full-width'],
+            ['name' => 'description', 'type' => 'textarea', 'label' => 'Descripción', 'width' => 'full-width'],
+          ], 
         ],
         'images' => [
-          ['name' => 'featured_image', 'type' => 'file', 'label' => 'Imagen destacada', 'width' => 'full-width'],
+          'noLocale' => [
+            ['name' => 'image', 'type' => 'file', 'label' => 'Imagen', 'width' => 'full-width'],
+          ],
         ],
       ]
     ];
