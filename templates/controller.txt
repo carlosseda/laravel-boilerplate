@@ -1,0 +1,132 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
+use App\Http\Controllers\Controller;
+use App\Models\{{capitalizeEntityName}};
+use App\Http\Requests\Admin\{{capitalizeEntityName}}Request;
+
+class {{capitalizeEntityName}}Controller extends Controller
+{
+  public function __construct(private {{capitalizeEntityName}} ${{entityName}}){}
+  
+  public function index()
+  {
+    try{
+
+      ${{entityName}}s = $this->{{entityName}}
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+      
+      if(request()->ajax()) {
+            
+        return response()->json([
+          'table' => view('components.admin-table', ['tableStructure' => $this->{{entityName}}->getTableStructure(), 'records' => ${{entityName}}s])->render(),
+          'form' => view('components.admin-form', ['formStructure' => $this->{{entityName}}->getFormStructure(), 'record' => $this->{{entityName}}])->render()
+        ], 200); 
+
+      }else{
+
+        $view = View::make('admin.{{entityName}}s.index')
+        ->with('tableStructure', $this->{{entityName}}->getTableStructure())
+        ->with('formStructure', $this->{{entityName}}->getFormStructure())
+        ->with('records', ${{entityName}}s)
+        ->with('record', $this->{{entityName}});
+
+        return $view;
+      }
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => \Lang::get('admin/notification.error'),
+      ], 500);
+    }
+  }
+
+  public function create()
+  {
+    try {
+      if (request()->ajax()) {
+        return response()->json([
+          'form' => view('components.admin-form', ['formStructure' => $this->{{entityName}}->getFormStructure(), 'record' => $this->{{entityName}}])->render(),
+        ], 200);
+      }
+    } catch (\Exception $e) {
+      return response()->json([
+          'message' =>  \Lang::get('admin/notification.error'),
+      ], 500);
+    }
+  }
+
+  public function store({{capitalizeEntityName}}Request $request)
+  {            
+    try{
+      $data = $request->validated();
+  
+      $this->event->updateOrCreate([
+        'id' => $request->input('id')
+      ], $data);
+  
+      ${{entityName}}s = $this->{{entityName}}
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
+      if ($request->filled('id')){
+        $message = \Lang::get('admin/notification.update');
+      }else{
+        $message = \Lang::get('admin/notification.create');
+      }
+      
+      return response()->json([
+        'table' => view('components.admin-table', ['tableStructure' => $this->{{entityName}}->getTableStructure(), 'records' => ${{entityName}}s])->render(),
+        'form' => view('components.admin-form', ['formStructure' => $this->{{entityName}}->getFormStructure(), 'record' => $this->{{entityName}}])->render(),
+        'message' => $message,
+      ], 200);
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => \Lang::get('admin/notification.error'),
+      ], 500);
+    }
+  }
+
+  public function edit({{capitalizeEntityName}} ${{entityName}})
+  {
+    try{
+      return response()->json([
+        'form' => view('components.admin-form', ['formStructure' => $this->{{entityName}}->getFormStructure(), 'record' => ${{entityName}}])->render(),
+      ], 200);
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => \Lang::get('admin/notification.error'),
+      ], 500);
+    }
+  }
+
+  public function destroy({{capitalizeEntityName}} ${{entityName}})
+  {
+    try{
+      ${{entityName}}->delete();
+
+      ${{entityName}}s = $this->{{entityName}}
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
+      $message = \Lang::get('admin/notification.destroy');
+      
+      return response()->json([
+        'table' => view('components.admin-table', ['tableStructure' => $this->{{entityName}}->getTableStructure(), 'records' => ${{entityName}}s])->render(),
+        'form' => view('components.admin-form', ['formStructure' => $this->{{entityName}}->getFormStructure(), 'record' => $this->{{entityName}}])->render(),
+        'message' => $message,
+      ], 200);
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => \Lang::get('admin/notification.error'),
+      ], 500);
+    }
+  }
+}

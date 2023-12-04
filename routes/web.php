@@ -20,10 +20,6 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
-  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
   Route::resource('idiomas', 'App\Http\Controllers\Admin\LanguageController', [
     'parameters' => [
         'idiomas' => 'language', 
@@ -62,6 +58,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
       'destroy' => 'events_destroy',
     ]
   ]);
+
+  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';

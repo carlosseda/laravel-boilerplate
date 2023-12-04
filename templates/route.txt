@@ -1,0 +1,14 @@
+
+
+  Route::resource('{{urlName}}', 'App\Http\Controllers\Admin\{{capitalizeEntityName}}Controller', [
+    'parameters' => [
+      '{{urlName}}' => '{{entityName}}', 
+    ],
+    'names' => [
+      'index' => '{{pluralEntityName}}',
+      'create' => '{{pluralEntityName}}_create',
+      'edit' => '{{pluralEntityName}}_edit',
+      'store' => '{{pluralEntityName}}_store',
+      'destroy' => '{{pluralEntityName}}_destroy',
+    ]
+  ]);
