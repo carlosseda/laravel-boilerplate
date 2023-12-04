@@ -15,6 +15,7 @@
             @switch($formElement['type'])
               @case('textarea')
                 <x-form.textarea 
+                  form="filter-form"
                   :name="$formElement['name']"
                   :width="$formElement['width']" 
                   :label="$formElement['label']" 
@@ -24,6 +25,7 @@
 
               @case('image')
                 <x-form.file
+                  form="filter-form"
                   :name="$formElement['name']"
                   :width="$formElement['width']" 
                   :label="$formElement['label']" 
@@ -33,6 +35,7 @@
       
               @case('file')
                 <x-form.file
+                  form="filter-form"
                   :name="$formElement['name']"
                   :width="$formElement['width']" 
                   :label="$formElement['label']" 
@@ -43,6 +46,7 @@
               @case('select')
 
                 <x-form.select
+                  form="filter-form"
                   :name="$formElement['name']"
                   :width="$formElement['width']" 
                   :label="$formElement['label']" 
@@ -54,6 +58,7 @@
               @case('checkbox')
 
                 <x-form.checkbox
+                  form="filter-form"
                   :name="$formElement['name']"
                   :width="$formElement['width']"
                   :label="$formElement['label']"
@@ -65,6 +70,7 @@
               @case('radio')
 
                 <x-form.radio
+                  form="filter-form"
                   :name="$formElement['name']"
                   :width="$formElement['width']"
                   :label="$formElement['label']"
@@ -72,9 +78,23 @@
                   :inputAttributes="$formElement['attributes'] ?? ''"
                 />
                 @break
+
+              @case('range')
+
+                <x-form.range
+                  form="admin-form"
+                  :name="$formElement['name']"
+                  :width="$formElement['width']"
+                  :label="$formElement['label']"
+                  :value="$record?->{$formElement['name']}"
+                  :type="$formElement['type']"
+                  :inputAttributes="$formElement['attributes'] ?? []"
+                />
+                @break
       
               @default
                 <x-form.input
+                  form="filter-form"
                   :name="$formElement['name']"
                   :width="$formElement['width']"
                   :label="$formElement['label']"

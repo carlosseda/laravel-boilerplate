@@ -1,4 +1,6 @@
 @props([
+  'form',
+  'locale' => '',
   'name',
   'label',
   'value' => '',
@@ -8,9 +10,13 @@
 
 <div class="form-element {{ $width }}">
   <div class="form-element-label">
-      <label for="{{ $name }}">{{ $label }}</label>
+      <label for="{{ $form }}-{{ $name }}">{{ $label }}</label>
   </div>
   <div class="form-element-input">
-      <textarea name="{{ $name }}" id="{{ $name }}">{{ $value }}</textarea>
+      <textarea 
+        name="{{ $locale ? 'locale[' . $name . '.' . $locale . ']' : $name }}" 
+        id="{{ $form }}-{{ $name }}">
+        {{ $value }}
+      </textarea>
   </div>
 </div>

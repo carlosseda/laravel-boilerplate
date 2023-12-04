@@ -1,4 +1,5 @@
 @props([
+  'form',
   'name',
   'label',
   'value' => '',
@@ -8,10 +9,10 @@
 
 <div class="form-element {{ $width }}">
   <div class="form-element-label">
-      <label for="{{ $name }}">{{ $label }}</label>
+      <label for="{{ $form }}-{{ $name }}">{{ $label }}</label>
   </div>
   <div class="form-element-input">
-    <select name="{{ $name }}" id="{{ $name }}">
+    <select name="{{ $name }}" id="{{ $form }}-{{ $name }}">
       @foreach ($options as $option)
         <option value="{{ $option['value'] }}" {{ $option['selected'] ?? '' }}>{{ $option['label'] }}</option>
       @endforeach

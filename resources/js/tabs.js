@@ -4,8 +4,6 @@ export default (() => {
 
   main?.addEventListener('click', (event) => {
 
-    event.preventDefault();
-
     if (event.target.closest('.tab')) {
 
       if (event.target.closest('.tab').classList.contains('active')) {

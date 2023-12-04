@@ -1,6 +1,5 @@
 @props([
   'form',
-  'locale' => '',
   'name',
   'label',
   'type' => 'text',
@@ -13,14 +12,17 @@
   <div class="form-element-label">
       <label for="{{ $form }}-{{ $name }}">{{ $label }}</label>
   </div>
-  <div class="form-element-input">
+  <div class="form-element-range">
     <input type="{{ $type }}" 
-      name="{{ $locale ? 'locale[' . $name . '.' . $locale . ']' : $name }}" 
+      name="{{ $name }}" 
       id="{{ $form }}-{{ $name }}" 
       value="{{ $value }}" 
       @foreach ($inputAttributes as $key => $value)
         {{ $key }}="{{ $value }}"      
       @endforeach
     >
+    <span class="range-value">
+      {{ $value }}
+    </span>
   </div>
 </div>

@@ -1,4 +1,5 @@
 @props([
+  'form',
   'name',
   'label',
   'value' => '',
@@ -7,9 +8,9 @@
 
 <div class="form-element {{ $width }}">
   <div class="form-element-label">
-      <label for="{{ $name }}">{{ $label }}</label>
+      <label for="{{ $form }}-{{ $name }}">{{ $label }}</label>
   </div>
   <div class="form-element-input">
-      <input type="file" name="{{ $name }}" id="{{ $name }}">
+      <input type="file" name="{{ $name }}" id="{{ $form }}-{{ $name }}">
   </div>
 </div>

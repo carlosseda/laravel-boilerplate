@@ -1,4 +1,5 @@
 @props([
+    'form',
     'name',
     'label',
     'options' => [],
@@ -10,16 +11,18 @@
       <label>{{ $label }}</label>
   </div>
   <div class="form-element-input">
-    @foreach ($options as $option)
       <div class="form-element-checkbox">
+        @foreach ($options as $option)
+
         <input type="checkbox" 
           name="{{ $name }}[]" 
-          id="{{ $name }}-{{ $option['value'] }}" 
+          id="{{ $form }}-{{ $name }}-{{ $option['value'] }}" 
           value="{{ $option['value'] }}" 
           {{ $option['checked'] ?? '' }}
         >
-        <label for="{{ $name }}-{{ $option['value'] }}">{{ $option['label'] }}</label>
+        <label for="{{ $form }}-{{ $name }}-{{ $option['value'] }}">{{ $option['label'] }}</label>
+        @endforeach
+
       </div>
-    @endforeach
   </div>
 </div>
