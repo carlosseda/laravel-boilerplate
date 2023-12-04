@@ -61,13 +61,17 @@ class User extends Authenticatable
       ],
       'inputs' => [
         'general' => [
-          ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'half-width'],
-          ['name' => 'email', 'type' => 'email', 'label' => 'Email', 'width' => 'half-width'],
-          ['name' => 'password', 'type' => 'password', 'label' => 'Contraseña', 'width' => 'half-width'],
-          ['name' => 'password_confirmation', 'type' => 'password', 'label' => 'Confirmar contraseña', 'width' => 'half-width'],
+          'noLocale' => [
+            ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'half-width'],
+            ['name' => 'email', 'type' => 'email', 'label' => 'Email', 'width' => 'half-width'],
+            ['name' => 'password', 'type' => 'password', 'label' => 'Contraseña', 'width' => 'half-width'],
+            ['name' => 'password_confirmation', 'type' => 'password', 'label' => 'Confirmar contraseña', 'width' => 'half-width'],
+          ]
         ],
         'images' => [
-          ['name' => 'image', 'type' => 'file', 'label' => 'Imagen', 'width' => 'full-width'],
+          'noLocale' => [
+            ['name' => 'image', 'type' => 'file', 'label' => 'Imagen', 'width' => 'full-width'],
+          ]
         ],
       ]
     ];
