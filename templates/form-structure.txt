@@ -1,0 +1,47 @@
+return [
+  'tabs' => [
+    ['name' => 'general', 'label' => 'General'],
+  ],
+  'formButtons' => [
+    'createButton' => 'events_create',
+    'storeButton' => 'events_store',
+  ],
+  'inputs' => [
+    'general' => [
+      'noLocale' => [
+        ['name' => 'description', 'label' => 'Descripción', 'type' => 'textarea', 'width' => 'full-width', 'attributes' => [ 'maxlength' => 1000, 'minlength' => 10, 'placeholder' => 'Escriba aquí', 'required' => true]],
+        ['name' => 'document', 'label' => 'Documento', 'type' => 'file', 'width' => 'full-width', 'attributes' => ['accept' => 'application/pdf', 'required' => true]],
+        ['name' => 'date', 'label' => 'Fecha', 'type' => 'date', 'width' => 'half-width', 'attributes' => ['max' => '2023-12-31', 'min' => '2023-01-01', 'required' => true]],
+        ['name' => 'name', 'label' => 'Nombre', 'type' => 'text', 'width' => 'half-width', 'attributes' => ['maxlength' => 255, 'minlength' => 3, 'placeholder' => 'Nombre completo', 'required' => true]],
+        ['name' => 'options', 'label' => 'Opciones', 'type' => 'select', 'width' => 'full-width', 'attributes' => ['multiple' => true, 'required' => true], 'options' => [
+          ['value' => '1', 'label' => 'Opción 1'],
+          ['value' => '2', 'label' => 'Opción 2', 'selected' => 'selected'],
+          ['value' => '3', 'label' => 'Opción 3'],
+        ]],
+        ['name' => 'gender', 'label' => 'Sexo', 'type' => 'radio', 'width' => 'full-width', 'options' => [
+          ['value' => '1', 'label' => 'Opción 1'],
+          ['value' => '2', 'label' => 'Opción 2', 'checked' => 'checked'],
+          ['value' => '3', 'label' => 'Opción 3']
+        ]],
+        ['name' => 'friends', 'label' => 'Sexo', 'type' => 'checkbox', 'width' => 'full-width', 'options' => [
+          ['value' => '1', 'label' => 'Opción 1'],
+          ['value' => '2', 'label' => 'Opción 2', 'checked' => 'checked'],
+          ['value' => '3', 'label' => 'Opción 3'],
+        ]],
+        ['name' => 'color', 'label' => 'Color', 'type' => 'color', 'width' => 'half-width'],
+        ['name' => 'email', 'label' => 'Email', 'type' => 'email', 'width' => 'half-width', 'attributes' => ['placeholder' => 'email@example.com', 'required' => true]],
+        ['name' => 'image', 'label' => 'Imagen', 'type' => 'image', 'width' => 'half-width', 'attributes' => ['src' => 'path/to/image', 'alt' => 'Image']],
+        ['name' => 'month', 'label' => 'Mes', 'type' => 'month', 'width' => 'half-width', 'attributes' => ['required' => true]],
+        ['name' => 'number', 'label' => 'Número', 'type' => 'number', 'width' => 'half-width', 'attributes' => ['min' => 1, 'max' => 100, 'required' => true]],
+        ['name' => 'password', 'label' => 'Contraseña', 'type' => 'password', 'width' => 'half-width', 'attributes' => ['required' => true, 'autocomplete' => true]],
+        ['name' => 'range', 'label' => 'Rango', 'type' => 'range', 'width' => 'half-width', 'attributes' => ['min' => 0, 'max' => 100, 'step' => 1, 'value' => 50]],
+        ['name' => 'search', 'label' => 'Búsqueda', 'type' => 'search', 'width' => 'half-width', 'attributes' => ['required' => true]],
+        ['name' => 'tel', 'label' => 'Teléfono', 'type' => 'tel', 'width' => 'half-width', 'attributes' => ['required' => true]],
+        ['name' => 'time', 'label' => 'Hora', 'type' => 'time', 'width' => 'half-width', 'attributes' => ['required' => true]],
+        ['name' => 'url', 'label' => 'URL', 'type' => 'url', 'width' => 'half-width', 'attributes' => ['required' => true]],
+        ['name' => 'week', 'label' => 'Semana', 'type' => 'week', 'width' => 'half-width', 'attributes' => ['required' => true]],
+        ['name' => 'datetime', 'label' => 'Fecha y Hora', 'type' => 'datetime-local', 'width' => 'half-width', 'attributes' => ['required' => true]]
+      ],
+    ]
+  ]   
+];

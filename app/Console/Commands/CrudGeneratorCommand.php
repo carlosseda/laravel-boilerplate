@@ -31,19 +31,26 @@ class CrudGeneratorCommand extends Command
     Responde a las siguientes preguntas para crear un CRUD completo para tu entidad.\n 
     Puedes cancelar en cualquier momento escribiendo !q");
 
-    $entityName = strtolower($this->argument('entityName'));
-    $capitalizeEntityName = ucwords($entityName);
+    $entityName = Str::singular(strtolower($this->argument('entityName')));
     $pluralEntityName = Str::plural($entityName);
-    $urlName = strtolower($this->ask('¿Cuál es el nombre de la URL para ' . $entityName . '?'));
+
+    $capitalizeEntityName = str_replace('_', ' ', $entityName);
+    $capitalizeEntityName = ucwords($capitalizeEntityName);
+    $capitalizeEntityName = str_replace(' ', '', $capitalizeEntityName);
+
+    $urlName = strtolower($this->ask('¿Cuál es el nombre de la URL? (ej: /admin/este-es-el-nombre-de-la-url)'));
     $this->quick($urlName);
-    $titleName = ucwords($urlName);
+    
+    $titleName = strtolower($this->ask('¿Cuál es el título de la página?'));
+    $this->quick($urlName);
+    $titleName = ucwords($titleName);
 
     // $this->createRoutes($urlName, $capitalizeEntityName, $entityName, $pluralEntityName);
     // $this->createController($entityName, $capitalizeEntityName);
     // $this->createView($pluralEntityName, $titleName);
     // $this->createMigration($pluralEntityName);
 
-    // $this->createModel($name);
+    $this->createModel($capitalizeEntityName);
     // $this->createRequest($name);
 
     // $this->call('migrate');
@@ -300,18 +307,18 @@ class CrudGeneratorCommand extends Command
     return $migrationStub;
   }
 
-  private function createModel($name)
+  private function createModel($capitalizeEntityName)
   {
-    $templatePath = base_path('path/to/your/template/model.txt');
+    $templatePath = base_path('templates/model.txt');
     $modelTemplate = file_get_contents($templatePath);
 
     $modelTemplate = str_replace(
-      ['{{modelName}}', '{{modelNamePlural}}'],
-      [$name, str_plural($name)],
-      $this->getStub('Model')
+      ['{{modelName}}'],
+      [$capitalizeEntityName],
+      $modelTemplate
     );
 
-    file_put_contents(app_path("/Models/{$name}.php"), $modelTemplate);
+    file_put_contents(app_path("/Models/{$capitalizeEntityName}.php"), $modelTemplate);
   }
 
   protected function formatValue($value)
