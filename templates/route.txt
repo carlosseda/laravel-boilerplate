@@ -1,8 +1,8 @@
 
 
-  Route::resource('{{urlName}}', 'App\Http\Controllers\Admin\{{capitalizeEntityName}}Controller', [
+  Route::resource('{{urlName}}', 'App\Http\Controllers\Admin\{{controllerName}}Controller', [
     'parameters' => [
-      '{{urlName}}' => '{{entityName}}', 
+      '{{injectionName}}' => '{{entityName}}', 
     ],
     'names' => [
       'index' => '{{pluralEntityName}}',

@@ -119,7 +119,7 @@
             @endforeach
           @endif
 
-          @if($localization == 'locale')
+          @if($localization == 'locale' && $formElements)
 
             <section class="locale-inputs">
   

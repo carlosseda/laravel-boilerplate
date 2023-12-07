@@ -1,0 +1,17 @@
+return [
+  'columns' => [
+    'name' => 'Nombre',
+    'date' => 'Fecha',
+    'time' => 'Hora'
+  ],
+  'filters' => [
+    ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'full-width'],
+    ['name' => 'date', 'type' => 'date', 'label' => 'Fecha', 'width' => 'full-width'],
+    ['name' => 'time', 'type' => 'time', 'label' => 'Hora', 'width' => 'full-width']
+  ],
+  'tableButtons' => ['filterButton'],
+  'recordButtons' => [
+    'editButton' => 'events_edit',
+    'destroyButton' => 'events_destroy',
+  ]
+];

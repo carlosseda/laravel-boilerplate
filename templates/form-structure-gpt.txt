@@ -3,8 +3,8 @@ return [
     ['name' => 'general', 'label' => 'General'],
   ],
   'formButtons' => [
-    'createButton' => '{{pluralEntityName}}_create',
-    'storeButton' => '{{pluralEntityName}}_store',
+    'createButton' => 'events_create',
+    'storeButton' => 'events_store',
   ],
   'inputs' => [
     'general' => [
