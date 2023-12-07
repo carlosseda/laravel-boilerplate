@@ -159,9 +159,6 @@ class CrudGeneratorCommand extends Command
 
       $customFields['type'] = $fieldType;
 
-      $fieldAttributes = $this->setFormFieldAttributes($field, $fields, $fieldType);
-      $customFields['attributes'] = $fieldAttributes;
-
       $fieldWidth = $this->choice(
         "¿Cuanto espacio quieres que ocupe en el formulario {$field}?:\n 
         - Escribe el número correspondiente\n\n",
@@ -173,16 +170,19 @@ class CrudGeneratorCommand extends Command
 
       $customFields['width'] = $fieldWidth;
 
+      $fieldAttributes = $this->setFormFieldAttributes($field, $fields, $fieldType);
+      $customFields['attributes'] = $fieldAttributes;
+
       return $customFields; 
     
     }, $formFields);
 
-    // Convertir a string $noLocaleFormFields
-    $noLocaleFormFields = json_encode($noLocaleFormFields, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    $noLocaleFormFields = $this->arrayToString($noLocaleFormFields, 4);
+    $localeFormFields = '[]';
 
     $formStructure = str_replace(
-      ['{{noLocaleFormFields}}'],
-      [$noLocaleFormFields],
+      ['{{pluralEntityName}}', '{{noLocaleFormFields}}', '{{localeFormFields}}'],
+      [$pluralEntityName, $noLocaleFormFields, $localeFormFields],
       $formTemplate 
     );
 
@@ -311,7 +311,7 @@ class CrudGeneratorCommand extends Command
       "Características adicionales para {$fieldName}: \n
       - Selecciona todas las características que quieras separando los números con comas\n
       - Selecciona ninguna si no quieres añadir características\n\n",
-      ['ninguna', 'after', 'always', 'autoIncrement', 'charset', 'collation', 'comment', 'default', 'first', 'from', 'generatedAs', 'index', 'invisible', 'isGeometry', 'storedAs', 'unique', 'unsigned', 'useCurrent', 'useCurrengtOnUpdate', 'virtualAs'],
+      ['ninguna', 'after', 'always', 'autoIncrement', 'charset', 'collation', 'comment', 'default', 'first', 'from', 'generatedAs', 'index', 'invisible', 'isGeometry', 'nullable', 'storedAs', 'unique', 'unsigned', 'useCurrent', 'useCurrengtOnUpdate', 'virtualAs'],
       null, 
       null,
       true 
@@ -533,149 +533,54 @@ class CrudGeneratorCommand extends Command
 
     $formFieldAttributes = [];
 
-    foreach ($fieldOptions as $fieldOption) {
-      if($fieldOption === 'nullable'){
-        $formFieldAttributes['required'] = true;
-      }
+    if (!in_array('nullable', $fieldOptions)) {
+      $formFieldAttributes['required'] = true;
+    } 
 
-      if($fieldOption === 'default'){
-        $formFieldAttributes['value'] = $fieldValues[$fieldOption];
-      }
+    if (in_array('default', $fieldOptions)) {
+      $formFieldAttributes['value'] = $fieldValues['default'];
     }
 
-    switch($formFieldType){
+    $customAttributes = [];
 
-      case 'text':
-      case 'textarea':
-      case 'password':
-      case 'email':
-      case 'url':
-      case 'color':
+    $fieldAttributesOptions = [
+      'text' => ['autocomplete', 'placeholder', 'maxlength', 'minlength', 'pattern', 'readonly'],
+      'textarea' => ['autocomplete', 'placeholder', 'maxlength', 'minlength', 'pattern', 'readonly'],
+      'password' => ['autocomplete', 'placeholder', 'maxlength', 'minlength', 'pattern', 'readonly'],
+      'email' => ['autocomplete', 'placeholder', 'maxlength', 'minlength', 'pattern', 'readonly'],
+      'url' => ['autocomplete', 'placeholder', 'maxlength', 'minlength', 'pattern', 'readonly'],
+      'color' => ['autocomplete', 'placeholder', 'maxlength', 'minlength', 'pattern', 'readonly'],
+      'number' => ['autocomplete', 'placeholder', 'max', 'min', 'step', 'readonly'],
+      'range' => ['autocomplete', 'placeholder', 'max', 'min', 'step', 'readonly'],
+      'select' => ['autocomplete', 'placeholder', 'multiple', 'size', 'readonly'],
+      'checkbox' => ['autocomplete', 'readonly'],
+      'radio' => ['autocomplete', 'readonly'],
+      'date' => ['autocomplete', 'placeholder', 'max', 'min', 'readonly'],
+      'time' => ['autocomplete', 'placeholder', 'max', 'min', 'readonly'],
+      'datetime-local' => ['autocomplete', 'placeholder', 'max', 'min', 'readonly'],
+      'year' => ['autocomplete', 'placeholder', 'max', 'min', 'readonly'],
+      'month' => ['autocomplete', 'placeholder', 'max', 'min', 'readonly'],
+      'week' => ['autocomplete', 'placeholder', 'max', 'min', 'readonly'],
+      'file' => ['accept', 'multiple', 'readonly'],
+      'hidden' => ['autocomplete', 'readonly'],
+      'search' => ['autocomplete', 'placeholder', 'maxlength', 'minlength', 'pattern', 'readonly'],
+      'tel' => ['autocomplete', 'placeholder', 'maxlength', 'minlength', 'pattern', 'readonly'],
+    ];
 
-        $customAttributes = $this->choice(
+    if (array_key_exists($formFieldType, $fieldAttributesOptions)) {
+      $customAttributes = $this->choice(
           "¿Qué atributos quieres para el input {$field} que es de tipo {$formFieldType}?: \n
           - Selecciona todas las características que quieras separando los números con comas\n
           - Selecciona ninguno si no quieres añadir características\n\n",
-          ['ninguno', 'autocomplete', 'placeholder', 'maxlength', 'minlength', 'pattern', 'readonly'],
+          array_merge(['ninguno'], $fieldAttributesOptions[$formFieldType]),
           null, 
           null,
           true 
-        );
-
-        $this->quick($customAttributes);
-
-        $customAttributes = array_filter($fieldOptions, function($option) {
+      );
+  
+      $customAttributes = array_filter($customAttributes, function($option) {
           return $option !== 'ninguno';
-        });
-      
-        break;  
-
-      case 'number':
-      case 'range':
-          
-        $customAttributes = $this->choice(
-          "¿Qué atributos quieres para el input {$field} que es de tipo {$formFieldType}?: \n
-          - Selecciona todas las características que quieras separando los números con comas\n
-          - Selecciona ninguno si no quieres añadir características\n\n",
-          ['ninguno', 'autocomplete', 'placeholder', 'max', 'min', 'step', 'readonly'],
-          null, 
-          null,
-          true 
-        );
-
-        $this->quick($customAttributes);
-
-        $customAttributes = array_filter($fieldOptions, function($option) {
-          return $option !== 'ninguno';
-        });
-      
-        break;
-
-      case 'select':
-
-        $customAttributes = $this->choice(
-          "¿Qué atributos quieres para el input {$field} que es de tipo {$formFieldType}?: \n
-          - Selecciona todas las características que quieras separando los números con comas\n
-          - Selecciona ninguno si no quieres añadir características\n\n",
-          ['ninguno', 'autocomplete', 'placeholder', 'multiple', 'size', 'readonly'],
-          null, 
-          null,
-          true 
-        );
-
-        $this->quick($customAttributes);
-
-        $customAttributes = array_filter($fieldOptions, function($option) {
-          return $option !== 'ninguno';
-        });
-      
-        break;
-
-      case 'checkbox':
-      case 'radio':
-
-        $customAttributes = $this->choice(
-          "¿Qué atributos quieres para el input {$field} que es de tipo {$formFieldType}?: \n
-          - Selecciona todas las características que quieras separando los números con comas\n
-          - Selecciona ninguno si no quieres añadir características\n\n",
-          ['ninguno', 'autocomplete', 'readonly'],
-          null, 
-          null,
-          true 
-        );
-
-        $this->quick($customAttributes);
-
-        $customAttributes = array_filter($fieldOptions, function($option) {
-          return $option !== 'ninguno';
-        });
-      
-        break;
-
-      case 'date':
-      case 'time':
-      case 'datetime-local':
-      case 'year':
-      case 'month':
-      case 'week':
-
-        $customAttributes = $this->choice(
-          "¿Qué atributos quieres para el input {$field} que es de tipo {$formFieldType}?: \n
-          - Selecciona todas las características que quieras separando los números con comas\n
-          - Selecciona ninguno si no quieres añadir características\n\n",
-          ['ninguno', 'autocomplete', 'placeholder', 'max', 'min', 'readonly'],
-          null, 
-          null,
-          true 
-        );
-
-        $this->quick($customAttributes);
-
-        $customAttributes = array_filter($fieldOptions, function($option) {
-          return $option !== 'ninguno';
-        });
-      
-        break;
-
-      case 'file':
-
-        $customAttributes = $this->choice(
-          "¿Qué atributos quieres para el input {$field} que es de tipo {$formFieldType}?: \n
-          - Selecciona todas las características que quieras separando los números con comas\n
-          - Selecciona ninguno si no quieres añadir características\n\n",
-          ['ninguno', 'accept', 'multiple', 'readonly'],
-          null, 
-          null,
-          true 
-        );
-
-        $this->quick($customAttributes);
-
-        $customAttributes = array_filter($fieldOptions, function($option) {
-          return $option !== 'ninguno';
-        });
-      
-        break;
+      });
     }
 
     foreach ($customAttributes as $customAttribute) {
@@ -702,6 +607,40 @@ class CrudGeneratorCommand extends Command
 
     return $value;
   }
+
+  function arrayToString($array, $indentation = 0) {
+
+    $json = json_encode($array, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+    $phpArray = str_replace(
+        ["{", "}", ":"], 
+        ["[", "]", "=>"], 
+        $json
+    );
+
+    $phpArray = preg_replace('/\[\[/', "[\n[", $phpArray);
+    $phpArray = preg_replace('/\],\s*\[/', "],\n[", $phpArray);
+    $phpArray = preg_replace('/\]\]\]/', "]]\n]", $phpArray);
+    $phpArray = preg_replace('/=>"/', "=> \"", $phpArray);
+    $phpArray = preg_replace('/,\'/', ",\n'", $phpArray);
+
+    // Identar aqui, sin llamar a ninguan funcion
+    $phpArray = $this->adjustIndentation($phpArray, $indentation);
+  
+    return $phpArray;
+  }
+
+  function adjustIndentation($string, $indentation = 0) {
+    $lines = explode("\n", $string);
+    $newLines = [];
+
+    foreach ($lines as $line) {
+      $newLines[] = str_repeat("\t", $indentation) . $line;
+    }
+
+    return implode("\n", $newLines);
+  }
+
 
   protected function quick($command){
     if ($command === '!q') {
