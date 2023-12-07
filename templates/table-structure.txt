@@ -3,9 +3,7 @@ return [
         {{tableFields}}
       ],
       'filters' => [
-        ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'full-width'],
-        ['name' => 'date', 'type' => 'date', 'label' => 'Fecha', 'width' => 'full-width'],
-        ['name' => 'time', 'type' => 'time', 'label' => 'Hora', 'width' => 'full-width']
+        {{filters}}
       ],
       'tableButtons' => ['filterButton'],
       'recordButtons' => [

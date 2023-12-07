@@ -27,8 +27,10 @@ class CrudGeneratorCommand extends Command
   /**
    * Execute the console command.
    */
-  public function handle()
-  {
+  public function handle(){
+
+    // TODO: Añadir mensajes de información y ayuda
+
     $this->info("\n\nBienvenido al generador de CRUD de Laravel.\n
     Responde a las siguientes preguntas para crear un CRUD completo para tu entidad.\n 
     Puedes cancelar en cualquier momento escribiendo !q\n
@@ -52,141 +54,16 @@ class CrudGeneratorCommand extends Command
     $this->quick($urlName);
     $titleName = ucwords($titleName);
 
+    // $this->createView($pluralEntityName, $titleName);
     $fields = $this->createMigration($pluralEntityName);
     $this->createModel($capitalizeEntityName, $pluralEntityName, $fields);
-
-    // $this->createView($pluralEntityName, $titleName);
+    // $this->createRequest($name);
     // $this->createRoutes($urlName, $capitalizeEntityName, $entityName, $pluralEntityName);
     // $this->createController($entityName, $capitalizeEntityName);
 
-    // $this->createRequest($name);
 
     // $this->call('migrate');
     $this->info('CRUD para ' . $entityName . ' creado exitosamente.');
-  }
-
-  protected function createMigration($pluralEntityName){
-    $tableRelations = $this->getTableRelations();
-
-    foreach ($tableRelations as $tableRelation) {
-      $fields[Str::singular($tableRelation) . '_id'] = ['type' => 'foreignId', 'options' => ['constrained']];
-    }
-
-    $fields = $this->addMigrationFields();
-
-    $migrationContent = $this->generateMigrationContent($pluralEntityName, $fields);
-    $fileName = date('Y_m_d_His') . '_create_' . Str::snake($pluralEntityName) . '_table.php';
-    file_put_contents(database_path('migrations/' . $fileName), $migrationContent);
-
-    return $fields;
-  }
-
-  private function createModel($capitalizeEntityName, $pluralEntityName, $fields){
-    $templatePath = base_path('templates/model.txt');
-    $modelTemplate = file_get_contents($templatePath);
-
-    $formStructure = $this->createFormStructure($pluralEntityName, $fields);
-    // $tableStructure = $this->createTableStructure($pluralEntityName, $fields);
-
-    $modelTemplate = str_replace(
-      ['{{modelName}}', '{{formStructure}}'],
-      [$capitalizeEntityName, $formStructure],
-      $modelTemplate
-    );
-
-    file_put_contents(app_path("/Models/{$capitalizeEntityName}.php"), $modelTemplate);
-  }
-
-  private function createTableStructure($pluralEntityName, $fields){
-    $templatePath = base_path('templates/table-structure.txt');
-    $tableTemplate = file_get_contents($templatePath);
-
-    $tableFields = array_keys($fields);
-
-    $tableFields = $this->choice(
-      "Selecciona los campos que quieres mostrar en la tabla:\n\n",
-      $tableFields,
-      null,
-      null,
-      true
-    );
-
-    $tableFields = array_map(function($field) {
-      $fieldName = $this->ask("¿Qué nombre quieres mostrar para el campo {$field}?");
-      $this->quick($fieldName);
-      return "'{$field}' => '{$fieldName}'"; 
-    }, $tableFields);
-
-    $tableFields = implode(",\n\t\t\t", $tableFields);
-
-    $tableStructure = str_replace(
-      ['{{pluralEntityName}}', '{{tableFields}}'],
-      [$pluralEntityName, $tableFields],
-      $tableTemplate 
-    );
-
-    return $tableStructure;
-  }
-
-  private function createFormStructure($pluralEntityName, $fields){
-
-    $templatePath = base_path('templates/form-structure.txt');
-    $formTemplate = file_get_contents($templatePath);
-
-    $formFields = array_keys($fields);
-
-    $noLocaleFormFields = array_map(function($field) use ($fields) {
-
-      $customFields = [];
-      $customFields['name'] = $field;
-      
-      $fieldName = $this->ask("¿Qué nombre quieres mostrar en el label para el campo {$field}?");
-      $this->quick($fieldName);
-      $customFields['label'] = $fieldName;
-
-      $fieldType = $this->setFormFieldType($field, $fields);
-
-      if (!$this->confirm('Se ha elegido ' . $fieldType . ' como tipo de dato para ' . $field . "\n ¿Estás de acuerdo?", true)) {
-        $fieldType = $this->choice(
-          "Tipo de dato para {$field}:\n 
-          - Escribe el número correspondiente\n\n",
-          ['textarea', 'text', 'number', 'select', 'checkbox', 'radio', 'date', 'time', 'datetime', 'file', 'password', 'email', 'url', 'color', 'range', 'hidden', 'search', 'tel', 'month', 'week', 'datetime-local'], 
-          null
-        );
-
-        $this->quick($fieldType);
-      }
-
-      $customFields['type'] = $fieldType;
-
-      $fieldWidth = $this->choice(
-        "¿Cuanto espacio quieres que ocupe en el formulario {$field}?:\n 
-        - Escribe el número correspondiente\n\n",
-        ['full-width', 'half-width', '.one-third-width', '.one-quarter-width'], 
-        null
-      );
-
-      $this->quick($fieldWidth);
-
-      $customFields['width'] = $fieldWidth;
-
-      $fieldAttributes = $this->setFormFieldAttributes($field, $fields, $fieldType);
-      $customFields['attributes'] = $fieldAttributes;
-
-      return $customFields; 
-    
-    }, $formFields);
-
-    $noLocaleFormFields = $this->arrayToString($noLocaleFormFields, 4);
-    $localeFormFields = '[]';
-
-    $formStructure = str_replace(
-      ['{{pluralEntityName}}', '{{noLocaleFormFields}}', '{{localeFormFields}}'],
-      [$pluralEntityName, $noLocaleFormFields, $localeFormFields],
-      $formTemplate 
-    );
-
-    return $formStructure;
   }
 
   private function createView($pluralEntityName, $titleName){
@@ -206,6 +83,44 @@ class CrudGeneratorCommand extends Command
     }
 
     file_put_contents(resource_path("/views/admin/$pluralEntityName/index.blade.php"), $viewTemplate);
+  }
+
+  protected function createMigration($pluralEntityName){
+    
+    $fields = [];
+
+    $tableRelations = $this->setTableRelations();
+    $fields = $this->addMigrationFields();
+
+    foreach ($tableRelations as $tableRelation) {
+      $fields[Str::singular($tableRelation) . '_id'] = ['type' => 'foreignId', 'options' => ['constrained']];
+    }
+
+    $migrationContent = $this->generateMigrationContent($pluralEntityName, $fields);
+    $fileName = date('Y_m_d_His') . '_create_' . Str::snake($pluralEntityName) . '_table.php';
+    file_put_contents(database_path('migrations/' . $fileName), $migrationContent);
+
+    return $fields;
+  }
+
+  private function createModel($capitalizeEntityName, $pluralEntityName, $fields){
+    $templatePath = base_path('templates/model.txt');
+    $modelTemplate = file_get_contents($templatePath);
+
+    ['formStructure' => $formStructure, 'noLocaleFormFields' => $noLocaleFormFields] = $this->createFormStructure($pluralEntityName, $fields);
+    $tableStructure = $this->createTableStructure($pluralEntityName, $fields, $noLocaleFormFields);
+
+    $modelTemplate = str_replace(
+      ['{{modelName}}', '{{formStructure}}', '{{tableStructure}}'],
+      [$capitalizeEntityName, $formStructure, $tableStructure],
+      $modelTemplate
+    );
+
+    file_put_contents(app_path("/Models/{$capitalizeEntityName}.php"), $modelTemplate);
+  } 
+
+  private function createRequest(){
+    //TODO: Crear el request a partir de los campos del formulario
   }
 
   private function createRoutes($urlName, $capitalizeEntityName, $entityName, $pluralEntityName){
@@ -242,10 +157,12 @@ class CrudGeneratorCommand extends Command
     file_put_contents(app_path("/Http/Controllers/Admin/{$capitalizeEntityName}Controller.php"), $viewTemplate);
   }
 
-  protected function getTableRelations(){
-    $tables = DB::connection()->getDoctrineSchemaManager()->listTableNames();
-
+  protected function setTableRelations(){
+    
     if ($this->confirm('¿Deseas añadir relaciones con otras tablas existentes?')) {
+
+      $tables = DB::connection()->getDoctrineSchemaManager()->listTableNames();
+
       $tableRelations = $this->choice(
         "Selecciona las tablas con las que se relaciona:\n\n",
         $tables,
@@ -255,6 +172,8 @@ class CrudGeneratorCommand extends Command
       );
 
       $this->quick($tableRelations);
+
+      //TODO: Crear el viewcomposer para añadir las relaciones en el modelo
 
       return $tableRelations;
     }
@@ -422,6 +341,180 @@ class CrudGeneratorCommand extends Command
     return $migrationStub;
   }
 
+  private function createFormStructure($pluralEntityName, $fields){
+
+    $templatePath = base_path('templates/form-structure.txt');
+    $formTemplate = file_get_contents($templatePath);
+
+    $noLocaleFormFields = $this->createNoLocaleFormFields($fields);
+
+    if ($this->confirm('¿Deseas añadir campos traducibles?', true)) {
+      $localeFormFields = $this->createLocaleFormFields();
+    } else {
+      $localeFormFields = str_repeat("\t", 4) . '[]';
+    };
+
+    $formStructure = str_replace(
+      ['{{pluralEntityName}}', '{{noLocaleFormFields}}', '{{localeFormFields}}'],
+      [$pluralEntityName, $noLocaleFormFields, $localeFormFields],
+      $formTemplate 
+    );
+
+    return ['formStructure' => $formStructure, 'noLocaleFormFields' => $noLocaleFormFields];
+  }
+
+  private function createTableStructure($pluralEntityName, $fields, $filters){
+    $templatePath = base_path('templates/table-structure.txt');
+    $tableTemplate = file_get_contents($templatePath);
+
+    $tableFields = array_keys($fields);
+
+    $tableFields = $this->choice(
+      "Selecciona los campos que quieres mostrar en la tabla:\n\n",
+      $tableFields,
+      null,
+      null,
+      true
+    );
+
+    // TODO: Ya no hace falta, se añade automáticamente
+    $tableFields = array_map(function($field) {
+      $fieldName = $this->ask("¿Qué nombre quieres mostrar para el campo {$field}?");
+      $this->quick($fieldName);
+      return "'{$field}' => '{$fieldName}'"; 
+    }, $tableFields);
+
+    $tableFields = implode(",\n\t\t\t", $tableFields);
+
+    $tableStructure = str_replace(
+      ['{{pluralEntityName}}', '{{tableFields}}', '{{filters}}'],
+      [$pluralEntityName, $tableFields, $filters],
+      $tableTemplate 
+    );
+
+    return $tableStructure;
+  }
+
+  private function createNoLocaleFormFields($fields){
+
+    $formFields = array_keys($fields);
+    $noLocaleFormFields = "";
+    
+    foreach ($formFields as $field) {
+
+      $customFormField = [];
+     
+      $customFormField['name'] = $field;
+      
+      $customFormField['label'] = $this->ask("¿Qué nombre quieres mostrar en el label para el campo {$field}?");
+      $this->quick($customFormField['label']);
+
+      $customFormField['type'] = $this->setFormFieldType($field, $fields);
+
+      if (!$this->confirm('Se ha elegido ' . $customFormField['type'] . ' como tipo de dato para ' . $field . "\n ¿Estás de acuerdo?", true)) {
+        $customFormField['type'] = $this->choice(
+          "Tipo de dato para {$field}:\n 
+          - Escribe el número correspondiente\n\n",
+          ['textarea', 'text', 'number', 'select', 'checkbox', 'radio', 'date', 'time', 'datetime', 'file', 'password', 'email', 'url', 'color', 'range', 'hidden', 'search', 'tel', 'month', 'week', 'datetime-local'], 
+          null
+        );
+
+        $this->quick($customFormField['type']);
+      }
+
+      $customFormField['width'] = $this->choice(
+        "¿Cuanto espacio quieres que ocupe en el formulario {$field}?:\n 
+        - Escribe el número correspondiente\n\n",
+        ['full-width', 'half-width', '.one-third-width', '.one-quarter-width'], 
+        null
+      );
+
+      $this->quick($customFormField['width']);
+
+      $customFormField['attributes'] = $this->setFormFieldAttributes($fields[$customFormField['name']], $customFormField['type']);
+
+      if ($fields[$field]['type'] === 'foreignId'){
+        $customFormField['options'] = ['related' => Str::plural(explode('_', $field)[0])];
+      }
+      else if (in_array($customFormField['type'], ['select', 'checkbox', 'radio'])) {
+        $customFormField['options'] = $this->setFormInputOptions($field, $customFormField['type']);
+      }
+
+      $noLocaleFormFields .= $this->arrayToString($customFormField, 4);
+    }
+
+    return $noLocaleFormFields;
+  }
+
+  private function createLocaleFormFields(){
+
+    $localeFormFields = "";
+
+    $continueAddingFields = true;
+
+    while ($continueAddingFields) {
+
+      $customFormField = [];
+
+      $customFormField['name'] = $this->ask("¿Qué name quieres para el input?:\n
+      - Deja en blanco para terminar\n\n");
+
+      $this->quick($customFormField['name']);
+
+      if (empty($customFormField['name'])) {
+        $continueAddingFields = false;
+        continue;
+      }
+
+      $customFormField['label'] = $this->ask("¿Qué nombre quieres mostrar en el label para el campo {$customFormField['name']}?");
+      $this->quick($customFormField['label']);
+
+      $customFormField['type'] = $this->choice(
+        "Tipo de dato para {$customFormField['name']}:\n 
+        - Escribe el número correspondiente\n\n",
+        ['textarea', 'text', 'number', 'select', 'checkbox', 'radio', 'date', 'time', 'datetime', 'file', 'password', 'email', 'url', 'color', 'range', 'hidden', 'search', 'tel', 'month', 'week', 'datetime-local'], 
+        null
+      );
+
+      $this->quick($customFormField['type']);
+
+      $customFormField['width'] = $this->choice(
+        "¿Cuanto espacio quieres que ocupe en el formulario {$customFormField['name']}?:\n 
+        - Escribe el número correspondiente\n\n",
+        ['full-width', 'half-width', '.one-third-width', '.one-quarter-width'], 
+        null
+      );
+
+      $this->quick($customFormField['width']);
+
+      $fields = [$customFormField['name'] => ['options' => [], 'values' => []]];
+
+      if ($this->confirm("¿Añado requerido al campo?", true)){
+        $fields[$customFormField['name']]['options'][] = 'nullable';
+      };
+
+      if ($this->confirm("¿Añado valor por defecto al campo?", true)){
+        $defaultValue = $this->ask("Valor por defecto para {$customFormField['name']}");
+        $this->quick($defaultValue);
+        $fields[$customFormField['name']]['options'][] = 'default';
+        $fields[$customFormField['name']]['values']['default'] = $defaultValue;
+      };
+
+      $customFormField['attributes'] = $this->setFormFieldAttributes($fields[$customFormField['name']], $customFormField['type']);
+
+      if (in_array($customFormField['type'], ['select', 'checkbox', 'radio'])) {
+
+        //TODO preguntar si quiere traer las opciones de una tabla o añadirlas manualmente
+        //TODO: Crear el viewcomposer para añadir las relaciones en el modelo
+        $customFormField['options'] = $this->setFormInputOptions($customFormField['name'], $customFormField['type']);
+      }
+
+      $localeFormFields .= $this->arrayToString($customFormField, 4);
+    }
+
+    return $localeFormFields;
+  }
+
   protected function setFormFieldType($field, $fields){
     $fieldType = $fields[$field]['type'];
 
@@ -469,6 +562,7 @@ class CrudGeneratorCommand extends Command
   
       case 'enum':
       case 'set':
+      case 'foreignId':
           $formFieldType = 'select';
           break;
   
@@ -526,19 +620,47 @@ class CrudGeneratorCommand extends Command
     return $formFieldType;
   }
 
-  protected function setFormFieldAttributes($field, $fields, $formFieldType){
+  protected function setFormInputOptions($field, $inputType){
+
+    $options = [];
+    $continueAddingOptions = true;
+
+    while ($continueAddingOptions) {
+
+      $option = [];
+
+      $option['value'] = $this->ask("¿Qué valor quieres añadir a la opción para el campo {$field}?:\n
+      - Deja en blanco para terminar\n\n");
+  
+      if (empty($option['value'])) {
+          $continueAddingOptions = false;
+          continue;
+      }
+  
+      $option['label'] = $this->ask("¿Qué etiqueta quieres para este valor?");
+
+      if ($inputType === 'select') {
+        $option['selected'] = $this->confirm("¿Quieres que esta opción sea la seleccionada por defecto?", false);
+      } else {
+        $option['checked'] = $this->confirm("¿Quieres que esta opción esté marcada por defecto?", false);
+      }
+
+      $options[] = $option;
+    }
+
+    return $options;
+  }
+
+  protected function setFormFieldAttributes($field, $formFieldType){
     
-    $fieldOptions = $fields[$field]['options'];
-    $fieldValues = $fields[$field]['values'];
+    $customFormField = [];
 
-    $formFieldAttributes = [];
-
-    if (!in_array('nullable', $fieldOptions)) {
-      $formFieldAttributes['required'] = true;
+    if (!in_array('nullable', $field['options'])) {
+      $customFormField['required'] = true;
     } 
 
-    if (in_array('default', $fieldOptions)) {
-      $formFieldAttributes['value'] = $fieldValues['default'];
+    if (in_array('default', $field['options'])) {
+      $customFormField['value'] = $field['values']['default'];
     }
 
     $customAttributes = [];
@@ -568,8 +690,11 @@ class CrudGeneratorCommand extends Command
     ];
 
     if (array_key_exists($formFieldType, $fieldAttributesOptions)) {
+
+      $fieldName = key($field);
+
       $customAttributes = $this->choice(
-          "¿Qué atributos quieres para el input {$field} que es de tipo {$formFieldType}?: \n
+          "¿Qué atributos quieres para el input {$fieldName} que es de tipo {$formFieldType}?: \n
           - Selecciona todas las características que quieras separando los números con comas\n
           - Selecciona ninguno si no quieres añadir características\n\n",
           array_merge(['ninguno'], $fieldAttributesOptions[$formFieldType]),
@@ -585,15 +710,15 @@ class CrudGeneratorCommand extends Command
 
     foreach ($customAttributes as $customAttribute) {
       if($customAttribute === 'autocomplete' || $customAttribute === 'readonly' || $customAttribute === 'multiple'){
-        $formFieldAttributes[$customAttribute] = true;
+        $customFormField[$customAttribute] = true;
       }else{
         $customAttributeValue = $this->ask("Valor para {$customAttribute}");
         $this->quick($customAttributeValue);
-        $formFieldAttributes[$customAttribute] = $customAttributeValue;
+        $customFormField[$customAttribute] = $customAttributeValue;
       }
     }
 
-    return $formFieldAttributes;
+    return $customFormField;
   }
 
   protected function formatValue($value){
@@ -618,29 +743,13 @@ class CrudGeneratorCommand extends Command
         $json
     );
 
-    $phpArray = preg_replace('/\[\[/', "[\n[", $phpArray);
-    $phpArray = preg_replace('/\],\s*\[/', "],\n[", $phpArray);
-    $phpArray = preg_replace('/\]\]\]/', "]]\n]", $phpArray);
-    $phpArray = preg_replace('/=>"/', "=> \"", $phpArray);
-    $phpArray = preg_replace('/,\'/', ",\n'", $phpArray);
+    $phpArray = preg_replace('/=>\s*/', ' => ', $phpArray);
+    $phpArray = preg_replace('/,/', ', ', $phpArray);
 
-    // Identar aqui, sin llamar a ninguan funcion
-    $phpArray = $this->adjustIndentation($phpArray, $indentation);
+    $phpArray = str_repeat("\t", $indentation) .$phpArray . ",\n";
   
     return $phpArray;
   }
-
-  function adjustIndentation($string, $indentation = 0) {
-    $lines = explode("\n", $string);
-    $newLines = [];
-
-    foreach ($lines as $line) {
-      $newLines[] = str_repeat("\t", $indentation) . $line;
-    }
-
-    return implode("\n", $newLines);
-  }
-
 
   protected function quick($command){
     if ($command === '!q') {

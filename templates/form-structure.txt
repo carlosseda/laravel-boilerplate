@@ -9,10 +9,10 @@ return [
   'inputs' => [
     'general' => [
       'noLocale' => [
-        {{noLocaleFormFields}}
+{{noLocaleFormFields}}
       ],
       'locale' => [
-        {{localeFormFields}}
+{{localeFormFields}}
       ]
     ]
   ]   
