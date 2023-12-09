@@ -24,6 +24,10 @@ class CrudGeneratorCommand extends Command
   Escribe el nombre de la entidad en singular, en minúsculas y en snake_case.\n 
   Por ejemplo: php artisan make:crud faq o php artisan make:crud faq_category";
 
+  protected $entityName;
+  protected $pluralEntityName;
+  protected $capitalizeEntityName;
+
   /**
    * Execute the console command.
    */
@@ -36,12 +40,9 @@ class CrudGeneratorCommand extends Command
     Puedes cancelar en cualquier momento escribiendo !q\n
     ###############################################################\n");
 
-    $entityName = Str::singular(strtolower($this->argument('entityName')));
-    $pluralEntityName = Str::plural($entityName);
-
-    $capitalizeEntityName = str_replace('_', ' ', $entityName);
-    $capitalizeEntityName = ucwords($capitalizeEntityName);
-    $capitalizeEntityName = str_replace(' ', '', $capitalizeEntityName);
+    $this->entityName = Str::singular(strtolower($this->argument('entityName')));
+    $this->pluralEntityName = Str::plural($this->entityName);
+    $this->capitalizeEntityName = Str::studly($this->entityName);
 
     $urlName = strtolower($this->ask("¿Cuál es el nombre de la URL?: \n\n
     - La url estará dentro de /admin, no hace falta que escribas /admin\n
@@ -51,22 +52,21 @@ class CrudGeneratorCommand extends Command
     $this->quick($urlName);
     
     $titleName = strtolower($this->ask('¿Cuál es el título de la página?'));
-    $this->quick($urlName);
-    $titleName = ucwords($titleName);
+    $this->quick($titleName);
 
-    // $this->createView($pluralEntityName, $titleName);
-    $fields = $this->createMigration($pluralEntityName);
-    $this->createModel($capitalizeEntityName, $pluralEntityName, $fields);
-    // $this->createRequest($name);
-    // $this->createRoutes($urlName, $capitalizeEntityName, $entityName, $pluralEntityName);
-    // $this->createController($entityName, $capitalizeEntityName);
-
-
+    // $this->createView($titleName);
+    // $fields = $this->createMigration();
+    // TODO: Crear pestaña de imágenes y SEO en el formulario
+    // $this->createModel($fields);
+    // $this->createRequest();
+    // $this->createRoutes($urlName);
+    // $this->createController();
     // $this->call('migrate');
-    $this->info('CRUD para ' . $entityName . ' creado exitosamente.');
+
+    $this->info('CRUD para ' . $this->entityName . ' creado exitosamente.');
   }
 
-  private function createView($pluralEntityName, $titleName){
+  private function createView($titleName){
     $templatePath = base_path('templates/view.txt');
     $viewTemplate = file_get_contents($templatePath);
 
@@ -76,16 +76,16 @@ class CrudGeneratorCommand extends Command
       $viewTemplate 
     );
 
-    $directory = resource_path("/views/admin/$pluralEntityName");
+    $directory = resource_path("/views/admin/$this->pluralEntityName");
 
     if (!file_exists($directory)) {
         mkdir($directory, 0755, true);
     }
 
-    file_put_contents(resource_path("/views/admin/$pluralEntityName/index.blade.php"), $viewTemplate);
+    file_put_contents(resource_path("/views/admin/$this->pluralEntityName/index.blade.php"), $viewTemplate);
   }
 
-  protected function createMigration($pluralEntityName){
+  protected function createMigration(){
     
     $fields = [];
 
@@ -96,34 +96,34 @@ class CrudGeneratorCommand extends Command
       $fields[Str::singular($tableRelation) . '_id'] = ['type' => 'foreignId', 'options' => ['constrained']];
     }
 
-    $migrationContent = $this->generateMigrationContent($pluralEntityName, $fields);
+    $migrationContent = $this->generateMigrationContent($fields);
     $fileName = date('Y_m_d_His') . '_create_' . Str::snake($pluralEntityName) . '_table.php';
     file_put_contents(database_path('migrations/' . $fileName), $migrationContent);
 
     return $fields;
   }
 
-  private function createModel($capitalizeEntityName, $pluralEntityName, $fields){
+  private function createModel($fields){
     $templatePath = base_path('templates/model.txt');
     $modelTemplate = file_get_contents($templatePath);
 
-    ['formStructure' => $formStructure, 'noLocaleFormFields' => $noLocaleFormFields] = $this->createFormStructure($pluralEntityName, $fields);
-    $tableStructure = $this->createTableStructure($pluralEntityName, $fields, $noLocaleFormFields);
+    ['formStructure' => $formStructure, 'noLocaleFormFields' => $noLocaleFormFields] = $this->createFormStructure($fields);
+    $tableStructure = $this->createTableStructure($fields, $noLocaleFormFields);
 
     $modelTemplate = str_replace(
       ['{{modelName}}', '{{formStructure}}', '{{tableStructure}}'],
-      [$capitalizeEntityName, $formStructure, $tableStructure],
+      [$this->capitalizeEntityName, $formStructure, $tableStructure],
       $modelTemplate
     );
 
-    file_put_contents(app_path("/Models/{$capitalizeEntityName}.php"), $modelTemplate);
+    file_put_contents(app_path("/Models/{$this->capitalizeEntityName}.php"), $modelTemplate);
   } 
 
   private function createRequest(){
     //TODO: Crear el request a partir de los campos del formulario
   }
 
-  private function createRoutes($urlName, $capitalizeEntityName, $entityName, $pluralEntityName){
+  private function createRoutes($urlName){
     $templatePath = base_path('templates/route.txt');
     $viewTemplate = file_get_contents($templatePath);
 
@@ -131,7 +131,7 @@ class CrudGeneratorCommand extends Command
 
     $viewTemplate = str_replace(
       ['{{urlName}}', '{{controllerName}}', '{{injectionName}}', '{{entityName}}', '{{pluralEntityName}}'],
-      [$urlName, $capitalizeEntityName, $injectionName, $entityName, $pluralEntityName],
+      [$urlName, $this->capitalizeEntityName, $injectionName, $this->entityName, $this->pluralEntityName],
       $viewTemplate 
     );
 
@@ -144,17 +144,49 @@ class CrudGeneratorCommand extends Command
     file_put_contents(base_path("/routes/web.php"), $webRoutes);
   }
 
-  private function createController($entityName, $capitalizeEntityName){
+  private function createController(){
     $templatePath = base_path('templates/controller.txt');
     $viewTemplate = file_get_contents($templatePath);
 
     $viewTemplate = str_replace(
       ['{{entityName}}','{{capitalizeEntityName}}'],
-      [$entityName, $capitalizeEntityName],
+      [$this->entityName, $this->capitalizeEntityName],
       $viewTemplate 
     );
 
-    file_put_contents(app_path("/Http/Controllers/Admin/{$capitalizeEntityName}Controller.php"), $viewTemplate);
+    file_put_contents(app_path("/Http/Controllers/Admin/{$this->capitalizeEntityName}Controller.php"), $viewTemplate);
+  }
+
+  private function createViewComposer($view, $tableRelation){
+    $templatePath = base_path('templates/view-composer.txt');
+    $viewComposerTemplate = file_get_contents($templatePath);
+
+    $entityName = Str::singular($tableRelation);
+    $pluralEntityName = Str::plural($entityName);
+    $capitalizeEntityName = Str::studly($entityName);
+
+    $viewComposerTemplate = str_replace(
+      ['{{entityName}}', '{{capitalizeEntityName}}', '{{pluralEntityName}}'],
+      [$entityName, $capitalizeEntityName, $pluralEntityName],
+      $viewComposerTemplate 
+    );
+
+    $directory = app_path("/Http/ViewComposers/Admin/$capitalizeEntityName");
+
+    if (!file_exists($directory)) {
+        mkdir($directory, 0755, true);
+    }
+
+    file_put_contents(app_path("/Http/ViewComposers/Admin/{$capitalizeEntityName}.php"), $viewComposerTemplate);
+
+    $viewComposer = file_get_contents(base_path("/app/Providers/ViewComposerServiceProvider.php"));
+
+    $position = strpos($viewComposer, "#Admin");
+    $position += strlen("#Admin"); 
+    $insert = "\n\t\t\tview()->composer('admin/$view', 'App\Http\ViewComposers\Admin\\$capitalizeEntityName');";
+    $viewComposer = substr_replace($viewComposer, $insert, $position, 0);
+
+    file_put_contents(base_path("/app/Providers/ViewComposerServiceProvider.php"), $viewComposer);
   }
 
   protected function setTableRelations(){
@@ -173,7 +205,9 @@ class CrudGeneratorCommand extends Command
 
       $this->quick($tableRelations);
 
-      //TODO: Crear el viewcomposer para añadir las relaciones en el modelo
+      foreach ($tableRelations as $tableRelation) {
+        $this->confirm("¿Crear un viewcomposer de $tableRelation para la vista de $this->pluralEntityName?", true) && $this->createViewComposer($this->pluralEntityName, $tableRelation);
+      }
 
       return $tableRelations;
     }
@@ -309,12 +343,12 @@ class CrudGeneratorCommand extends Command
     return $additionalValues;
   }
 
-  protected function generateMigrationContent($pluralEntityName, $fields){
+  protected function generateMigrationContent($fields){
     $migrationStub = "<?php\n\n";
     $migrationStub .= "use Illuminate\Database\Migrations\Migration;\nuse Illuminate\Database\Schema\Blueprint;\nuse Illuminate\Support\Facades\Schema;\n\n";
     $migrationStub .= "return new class extends Migration\n{\n";
     $migrationStub .= "\tpublic function up()\n\t{\n";
-    $migrationStub .= "\t\tSchema::create('" . Str::snake($pluralEntityName) . "', function (Blueprint \$table) {\n";
+    $migrationStub .= "\t\tSchema::create('" . Str::snake($this->pluralEntityName) . "', function (Blueprint \$table) {\n";
     $migrationStub .= "\t\t\t\$table->id();\n";
 
     foreach ($fields as $fieldName => $fieldDetails) {
@@ -336,12 +370,12 @@ class CrudGeneratorCommand extends Command
     $migrationStub .= "\t\t\t\$table->timestamps();\n";
     $migrationStub .= "\t\t\t\$table->softDeletes();\n";
     $migrationStub .= "\t\t});\n\t}\n\n\tpublic function down()\n\t{\n";
-    $migrationStub .= "\t\tSchema::dropIfExists('" . Str::snake($pluralEntityName) . "');\n\t}\n};\n";
+    $migrationStub .= "\t\tSchema::dropIfExists('" . Str::snake($this->pluralEntityName) . "');\n\t}\n};\n";
 
     return $migrationStub;
   }
 
-  private function createFormStructure($pluralEntityName, $fields){
+  private function createFormStructure($fields){
 
     $templatePath = base_path('templates/form-structure.txt');
     $formTemplate = file_get_contents($templatePath);
@@ -356,14 +390,14 @@ class CrudGeneratorCommand extends Command
 
     $formStructure = str_replace(
       ['{{pluralEntityName}}', '{{noLocaleFormFields}}', '{{localeFormFields}}'],
-      [$pluralEntityName, $noLocaleFormFields, $localeFormFields],
+      [$this->pluralEntityName, $noLocaleFormFields, $localeFormFields],
       $formTemplate 
     );
 
     return ['formStructure' => $formStructure, 'noLocaleFormFields' => $noLocaleFormFields];
   }
 
-  private function createTableStructure($pluralEntityName, $fields, $filters){
+  private function createTableStructure($fields, $filters){
     $templatePath = base_path('templates/table-structure.txt');
     $tableTemplate = file_get_contents($templatePath);
 
@@ -388,7 +422,7 @@ class CrudGeneratorCommand extends Command
 
     $tableStructure = str_replace(
       ['{{pluralEntityName}}', '{{tableFields}}', '{{filters}}'],
-      [$pluralEntityName, $tableFields, $filters],
+      [$this->pluralEntityName, $tableFields, $filters],
       $tableTemplate 
     );
 
@@ -472,7 +506,7 @@ class CrudGeneratorCommand extends Command
       $customFormField['type'] = $this->choice(
         "Tipo de dato para {$customFormField['name']}:\n 
         - Escribe el número correspondiente\n\n",
-        ['textarea', 'text', 'number', 'select', 'checkbox', 'radio', 'date', 'time', 'datetime', 'file', 'password', 'email', 'url', 'color', 'range', 'hidden', 'search', 'tel', 'month', 'week', 'datetime-local'], 
+        ['textarea', 'text'], 
         null
       );
 
@@ -501,13 +535,6 @@ class CrudGeneratorCommand extends Command
       };
 
       $customFormField['attributes'] = $this->setFormFieldAttributes($fields[$customFormField['name']], $customFormField['type']);
-
-      if (in_array($customFormField['type'], ['select', 'checkbox', 'radio'])) {
-
-        //TODO preguntar si quiere traer las opciones de una tabla o añadirlas manualmente
-        //TODO: Crear el viewcomposer para añadir las relaciones en el modelo
-        $customFormField['options'] = $this->setFormInputOptions($customFormField['name'], $customFormField['type']);
-      }
 
       $localeFormFields .= $this->arrayToString($customFormField, 4);
     }

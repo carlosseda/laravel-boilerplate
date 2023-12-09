@@ -3,26 +3,26 @@
 namespace App\Http\ViewComposers\Admin;
 
 use Illuminate\View\View;
-use App\Models\Language as DBLanguage;
+use App\Models\{{capitalizeEntityName}} as DB{{capitalizeEntityName}};
 
-class Language
+class {{capitalizeEntityName}}
 {
   static $composed;
 
-  public function __construct(DBLanguage $languages)
+  public function __construct(DB{{capitalizeEntityName}} ${{pluralEntityName}})
   {
-    $this->languages = $languages; 
+    $this->{{pluralEntityName}} = ${{pluralEntityName}}; 
   }
 
   public function compose(View $view)
   {
     if(static::$composed)
     {
-      return $view->with('languages', static::$composed);
+      return $view->with('{{pluralEntityName}}', static::$composed);
     }
 
-    static::$composed = $this->languages->orderBy('name', 'desc')->get();
+    static::$composed = $this->{{pluralEntityName}}->get();
 
-    $view->with('languages', static::$composed);
+    $view->with('{{pluralEntityName}}', static::$composed);
   }
 }

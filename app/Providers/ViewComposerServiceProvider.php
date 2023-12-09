@@ -19,6 +19,8 @@ class ViewComposerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+      #Admin
+
       view()->composer([
         'components.admin-form-generator'],
         'App\Http\ViewComposers\Admin\Language'
