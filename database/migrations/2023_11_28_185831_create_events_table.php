@@ -14,10 +14,12 @@ return new class extends Migration
     Schema::create('events', function (Blueprint $table) {
       $table->id();
       $table->string('name'); 
-      $table->string('address'); 
-      $table->decimal('price', 8, 2); 
-      $table->date('date'); 
-      $table->time('time');
+      $table->string('address')->default("Evento online"); 
+      $table->decimal('price', 8, 2)->default(0);  
+      $table->date('startDate'); 
+      $table->date('endDate'); 
+      $table->time('startTime');
+      $table->time('endTime');
       $table->timestamps();
       $table->softDeletes(); 
     });
