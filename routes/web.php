@@ -14,15 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::resource('idiomas', 'App\Http\Controllers\Admin\LanguageController', [
     'parameters' => [
-        'idiomas' => 'language', 
+      'idiomas' => 'language', 
     ],
     'names' => [
       'index' => 'languages',
@@ -35,7 +31,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::resource('usuarios', 'App\Http\Controllers\Admin\UserController', [
     'parameters' => [
-        'usuarios' => 'user', 
+      'usuarios' => 'user', 
     ],
     'names' => [
       'index' => 'users',
@@ -48,7 +44,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
   Route::resource('eventos', 'App\Http\Controllers\Admin\EventController', [
     'parameters' => [
-        'eventos' => 'event', 
+      'eventos' => 'event', 
     ],
     'names' => [
       'index' => 'events',
