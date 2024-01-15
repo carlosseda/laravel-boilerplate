@@ -19,8 +19,8 @@ class Event extends Model
     return [
       'columns' => [
         'name' => 'Nombre',
-        'date' => 'Fecha',
-        'time' => 'Hora',
+        'startDate' => 'Fecha de inicio',
+        'startTime' => 'Hora de inicio',
         'created_at' => 'Fecha de creación',
         'updated_at' => 'Fecha de actualización'
       ],
@@ -54,8 +54,10 @@ class Event extends Model
             ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'full-width'],
             ['name' => 'address', 'type' => 'text', 'label' => 'Dirección', 'width' => 'half-width'],
             ['name' => 'price', 'type' => 'number', 'label' => 'Precio', 'width' => 'half-width'],
-            ['name' => 'date', 'type' => 'date', 'label' => 'Fecha', 'width' => 'half-width'],
-            ['name' => 'time', 'type' => 'time', 'label' => 'Hora', 'width' => 'half-width'],
+            ['name' => 'startDate', 'type' => 'date', 'label' => 'Fecha de Inicio', 'width' => 'half-width'],
+            ['name' => 'endDate', 'type' => 'date', 'label' => 'Fecha de Fin', 'width' => 'half-width'],
+            ['name' => 'startTime', 'type' => 'time', 'label' => 'Hora de Inicio', 'width' => 'half-width'],
+            ['name' => 'endTime', 'type' => 'time', 'label' => 'Hora de Fin', 'width' => 'half-width'],
           ],
           'locale' => [
             ['name' => 'title', 'type' => 'text', 'label' => 'Título', 'width' => 'full-width'],

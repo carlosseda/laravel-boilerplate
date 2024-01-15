@@ -3,7 +3,6 @@ export default (() => {
   const formSection = document.querySelector('.form');
 
   document.addEventListener("refreshForm", event => {
-    console.log(event.detail.form)
     formSection.innerHTML = event.detail.form;
   });
 
@@ -15,7 +14,7 @@ export default (() => {
       const endpoint = storeButton.dataset.endpoint;
       const form = document.querySelector('.admin-form');
       const formData = new FormData(form);
-    
+
       try{
         const response = await fetch(endpoint, {
           headers: {
