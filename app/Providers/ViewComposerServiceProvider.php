@@ -25,5 +25,7 @@ class ViewComposerServiceProvider extends ServiceProvider
         'components.admin-form-generator'],
         'App\Http\ViewComposers\Admin\Language'
       );
+
+      
     }
 }

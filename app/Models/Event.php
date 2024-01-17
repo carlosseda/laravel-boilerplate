@@ -19,8 +19,8 @@ class Event extends Model
     return [
       'columns' => [
         'name' => 'Nombre',
-        'startDate' => 'Fecha de inicio',
-        'startTime' => 'Hora de inicio',
+        'start_date' => 'Fecha de inicio',
+        'start_time' => 'Hora de inicio',
         'created_at' => 'Fecha de creación',
         'updated_at' => 'Fecha de actualización'
       ],
@@ -51,13 +51,18 @@ class Event extends Model
       'inputs' => [
         'general' => [
           'noLocale' => [
-            ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'full-width'],
+            ['name' => 'name', 'type' => 'text', 'label' => 'Nombre', 'width' => 'half-width'],
+            ['name' => 'town_id', 'label' => 'Población', 'type' => 'select', 'width' => 'half-width', 'options' => [
+              ['value' => '1', 'label' => 'Opción 1'],
+              ['value' => '2', 'label' => 'Opción 2', 'selected' => 'selected'],
+              ['value' => '3', 'label' => 'Opción 3'],
+            ]],
             ['name' => 'address', 'type' => 'text', 'label' => 'Dirección', 'width' => 'half-width'],
             ['name' => 'price', 'type' => 'number', 'label' => 'Precio', 'width' => 'half-width'],
-            ['name' => 'startDate', 'type' => 'date', 'label' => 'Fecha de Inicio', 'width' => 'half-width'],
-            ['name' => 'endDate', 'type' => 'date', 'label' => 'Fecha de Fin', 'width' => 'half-width'],
-            ['name' => 'startTime', 'type' => 'time', 'label' => 'Hora de Inicio', 'width' => 'half-width'],
-            ['name' => 'endTime', 'type' => 'time', 'label' => 'Hora de Fin', 'width' => 'half-width'],
+            ['name' => 'start_date', 'type' => 'date', 'label' => 'Fecha de Inicio', 'width' => 'half-width'],
+            ['name' => 'end_date', 'type' => 'date', 'label' => 'Fecha de Fin', 'width' => 'half-width'],
+            ['name' => 'start_time', 'type' => 'time', 'label' => 'Hora de Inicio', 'width' => 'half-width'],
+            ['name' => 'end_time', 'type' => 'time', 'label' => 'Hora de Fin', 'width' => 'half-width'],
           ],
           'locale' => [
             ['name' => 'title', 'type' => 'text', 'label' => 'Título', 'width' => 'full-width'],
