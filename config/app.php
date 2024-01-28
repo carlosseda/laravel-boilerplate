@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\ViewComposerServiceProvider::class,
+        App\Providers\LocaleServiceProvider::class,
 
     ])->toArray(),
 

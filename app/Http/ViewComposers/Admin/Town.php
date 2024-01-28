@@ -9,10 +9,7 @@ class Town
 {
   static $composed;
 
-  public function __construct(DBTown $towns)
-  {
-    $this->towns = $towns; 
-  }
+  public function __construct(private DBTown $towns){}
 
   public function compose(View $view)
   {

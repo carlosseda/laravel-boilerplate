@@ -9,10 +9,7 @@ class Language
 {
   static $composed;
 
-  public function __construct(DBLanguage $languages)
-  {
-    $this->languages = $languages; 
-  }
+  public function __construct(private DBLanguage $languages){}
 
   public function compose(View $view)
   {
@@ -21,7 +18,7 @@ class Language
       return $view->with('languages', static::$composed);
     }
 
-    static::$composed = $this->languages->orderBy('name', 'desc')->get();
+    static::$composed = $this->languages->orderBy('name', 'asc')->get();
 
     $view->with('languages', static::$composed);
   }

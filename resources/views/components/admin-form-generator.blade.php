@@ -143,7 +143,7 @@
         
                           <x-form.textarea 
                             form="admin-form"
-                            :locale="$language['name']"
+                            :locale="$language['label']"
                             :name="$formElement['name']"
                             :width="$formElement['width']" 
                             :label="$formElement['label']" 
@@ -232,7 +232,8 @@
         
                           <x-form.input
                             form="admin-form"
-                            :locale="$language['name']"
+                            :record="$record"
+                            :locale="$language['label']"
                             :name="$formElement['name']"
                             :width="$formElement['width']"
                             :label="$formElement['label']"
