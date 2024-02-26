@@ -60,4 +60,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/', 'App\Http\Controllers\Front\HomeController@index')->name('home');
+Route::get('/eventos/{id}', 'App\Http\Controllers\Front\EventController@show')->name('event');
+
 require __DIR__.'/auth.php';

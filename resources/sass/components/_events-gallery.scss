@@ -1,0 +1,44 @@
+.events-gallery{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.events-gallery-title h2{
+  font-size: 2rem;
+  text-align: center;
+}
+
+.events-gallery-items{
+  display: grid;
+  gap: 4rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.events-gallery-item{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.events-gallery-item-image{
+  background-color: hsl(0, 0%, 50%);
+  height: 300px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.events-gallery-item-title h3{
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.events-gallery-item-information{
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.events-gallery-item-price span{
+  font-weight: bold;
+}

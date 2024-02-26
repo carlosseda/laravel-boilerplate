@@ -26,6 +26,10 @@ class ViewComposerServiceProvider extends ServiceProvider
         'App\Http\ViewComposers\Admin\Language'
       );
 
+      view()->composer([
+        'components.admin-form-generator'],
+        'App\Http\ViewComposers\Admin\Town',
+      );
       
     }
 }

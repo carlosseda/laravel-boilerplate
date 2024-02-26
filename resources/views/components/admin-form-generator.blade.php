@@ -15,13 +15,13 @@
             @foreach ($formElements as $formElement)
               @switch($formElement['type'])
                 @case('textarea')
-
+     
                   <x-form.textarea 
                     form="admin-form"
+                    :record="$record"
                     :name="$formElement['name']"
                     :width="$formElement['width']" 
                     :label="$formElement['label']" 
-                    :value="$record?->{$formElement['name']}"
                     :inputAttributes="$formElement['attributes'] ?? ''"
                   />
                   @break
@@ -106,10 +106,10 @@
 
                   <x-form.input
                     form="admin-form"
+                    :record="$record"
                     :name="$formElement['name']"
                     :width="$formElement['width']"
                     :label="$formElement['label']"
-                    :value="$record?->{$formElement['name']}"
                     :type="$formElement['type']"
                     :inputAttributes="$formElement['attributes'] ?? []"
                   />
@@ -143,11 +143,11 @@
         
                           <x-form.textarea 
                             form="admin-form"
+                            :record="$record"
                             :locale="$language['label']"
                             :name="$formElement['name']"
                             :width="$formElement['width']" 
                             :label="$formElement['label']" 
-                            :value="$record?->{$formElement['name']}"
                             :inputAttributes="$formElement['attributes'] ?? ''"
                           />
                           @break
@@ -237,7 +237,6 @@
                             :name="$formElement['name']"
                             :width="$formElement['width']"
                             :label="$formElement['label']"
-                            :value="$record?->{$formElement['name']}"
                             :type="$formElement['type']"
                             :inputAttributes="$formElement['attributes'] ?? []"
                           />

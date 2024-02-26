@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\App;
 
 class Event extends Model
 {
@@ -27,6 +28,16 @@ class Event extends Model
   public function traductions()
   {
     return $this->hasMany(Locale::class, 'entity_id')->where('entity', 'events')->where('language_alias', App::getLocale());
+  }
+
+  public function getTitleAttribute()
+  {
+    return $this->traductions->where('key', 'title')->first()->value ?? '';
+  }
+
+  public function getDescriptionAttribute()
+  {
+    return $this->traductions->where('key', 'description')->first()->value ?? '';
   }
 
   public function getTableStructure()

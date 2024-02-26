@@ -72,14 +72,14 @@ class EventController extends Controller
       $event = $this->event->updateOrCreate([
         'id' => $request->input('id')
       ], $data);
-  
-      $events = $this->event
-      ->orderBy('created_at', 'desc')
-      ->paginate(10);
 
       if(request('locale')){
         $locale = $this->localeService->store(request('locale'), $event->id);
       }
+  
+      $events = $this->event
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
 
       if ($request->filled('id')){
         $message = \Lang::get('admin/notification.update');
@@ -94,7 +94,6 @@ class EventController extends Controller
       ], 200);
     }
     catch(\Exception $e){
-      Debugbar::error($e);  
       return response()->json([
         'message' => \Lang::get('admin/notification.error'),
       ], 500);
@@ -104,19 +103,14 @@ class EventController extends Controller
   public function edit(Event $event)
   {
     try{
-      $locales = $event->locales()->pluck('value', 'name')->all();
-      
-      foreach ($locales as $name => $value) {
-        $event->$name = $value;
-      }
 
-      Debugbar::info($event);
+      $event = $this->localeService->parseLocales($event);
+      
       return response()->json([
         'form' => view('components.admin-form', ['formStructure' => $this->event->getFormStructure(), 'record' => $event])->render(),
       ], 200);
     }
     catch(\Exception $e){
-      Debugbar::error($e);
       return response()->json([
         'message' => \Lang::get('admin/notification.error'),
       ], 500);

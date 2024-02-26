@@ -1,0 +1,27 @@
+.event{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.event-image{
+  background-color: hsl(0, 0%, 50%);
+  height: 500px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.event-title h3{
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.event-information{
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.event-price span{
+  font-weight: bold;
+}

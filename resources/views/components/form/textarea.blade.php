@@ -1,5 +1,6 @@
 @props([
   'form',
+  'record' => null,
   'locale' => '',
   'name',
   'label',
@@ -8,15 +9,19 @@
   'inputAttributes' => [],
 ])
 
+@php
+  if ($record) $value = $record[$name . '.' . $locale] ?? $record->{$name} ?? '';
+  if ($locale) $name = 'locale[' . $name . '.' . $locale . ']';
+@endphp
+
 <div class="form-element {{ $width }}">
   <div class="form-element-label">
       <label for="{{ $form }}-{{ $name }}">{{ $label }}</label>
   </div>
   <div class="form-element-input">
-      <textarea 
-        name="{{ $locale ? 'locale[' . $name . '.' . $locale . ']' : $name }}" 
-        id="{{ $form }}-{{ $name }}">
-        {{ $value }}
-      </textarea>
+    <textarea 
+      name="{{ $name }}" 
+      id="{{ $form }}-{{ $name }}"
+    >{{ $value }}</textarea>
   </div>
 </div>
